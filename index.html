@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="css/fer-cookiebot.css">
 </head>
 <body>
-	<!-- ADD DIALOG HTML -->
-    <dialog id="consentDialog"></dialog>
-    <!-- ADD TO COKIES POLICY FOR STARTING DIALOG -->
+    <!-- ADD TO COKIES POLICY FOR STARTING DIALOG IF NEEDED -->
     <span id="changeCookieBotPreferences">Change Cookiebot Preferences</span>
+
+	<!-- INITIALIZE COOKIE BOT -->
 	<script type="module">
 		import FerCookieBot from './js/fer-cookiebot.js';
 		/* DEFINE OPTIONS */
@@ -28,6 +28,5 @@
 		/* ADD YOUR GTAG ID, OPTIONS - CREATES GTAG/GA4 TAG AND INITIALIZE COOKIES */
 		const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', cookieBotOptions);
 	</script>
-
 </body>
 </html>

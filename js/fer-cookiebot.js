@@ -79,7 +79,14 @@ class FerCookieBot {
     }
 
     createConsentDialog() {
-        const dialog = document.getElementById('consentDialog');
+        
+         // Create the dialog element
+        const dialog = document.createElement('dialog');
+        dialog.id = 'consentDialog';
+        
+        // Append the dialog to the document body
+        document.body.appendChild(dialog);
+
         // Set title
         const titleDiv = document.createElement('div');
         titleDiv.id = 'consent_title';
