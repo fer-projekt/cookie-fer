@@ -28,7 +28,7 @@ Create an instance of the FerCookieBot class with your Google Tag ID:
     const  cookieBot  =  new  FerCookieBot('YOUR_GOOGLE_TAG_ID', cookieBotOptions);
 
 ## Customization
-FerCookieBot allows for extensive customization through options passed at initialization. This enables you to tailor the consent dialog to fit your website's style and requirements, as well as to specify the exact text and titles for various cookie categories and consent information.
+FerCookieBot allows for  customization through options passed at initialization. This enables you  to specify the exact text and titles for various cookie categories and consent information.
 
     const cookieBotOptions = {
         title: "Your Consent Title",
