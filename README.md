@@ -4,17 +4,21 @@ FerCookieBot is an advanced JavaScript solution designed for website owners to m
 
 FerCookieBot enhances the integration of tracking technologies on your website by automatically generating and managing the necessary script codes for Google Analytics (via gtag.js) and Facebook Pixel. This feature simplifies the setup process, ensuring that your website complies with user consent preferences while eliminating the need for manual code insertion for these services.
 
-## Automated Script Injection
+# Automated Script Injection
 
 Upon initialization, FerCookieBot dynamically inserts the Google Analytics and Facebook Pixel scripts into your webpage based on the provided identifiers (Google Tag ID and Facebook Pixel ID). This automation is designed to respect the consent choices made by your users, loading these tracking technologies only when permission has been granted, thereby adhering to privacy regulations such as GDPR and CCPA.
 
-## Remove Existing Tracking Scripts: 
+## Streamlined Setup: 
+
+No need to manually add separate script tags for Google Analytics or Facebook Pixel in your website's HTML. FerCookieBot handles the inclusion of these scripts dynamically, reducing setup complexity and potential errors.
 
 When initializing FerCookieBot, pass your valid Google Tag ID and Facebook Pixel ID (if necessary) as arguments to the constructor.
 
+## Remove Existing Tracking Scripts: 
+
 If you have previously added Google Analytics or Facebook Pixel scripts directly to your website's HTML, remove those scripts to prevent duplicate tracking and ensure that data collection is managed solely through FerCookieBot.
 
-## Features
+# Features
 
 **Consent Dialog:** A customizable dialog prompts users for their cookie preferences, enhancing transparency and control over personal data processing.
 
@@ -30,7 +34,7 @@ If you have previously added Google Analytics or Facebook Pixel scripts directly
 
 **To integrate FerCookieBot into your website, follow these steps:**
 
-## Installation & Initialization
+# Installation & Initialization
 
 Include the FerCookieBot css in your project.
 
