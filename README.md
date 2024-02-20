@@ -46,11 +46,11 @@ CookieBot allows for extensive customization through options passed at initializ
 ## Preference Button
 Implement a button allowing users to change their cookie preferences at any time:
 
-    <button id="changePreferences">Change Cookie Preferences</button>
+    <button id="changeCookieBotPreferences">Change Cookie Preferences</button>
 
 Attach an event listener to this button to trigger the consent dialog:
 
-    document.getElementById('changePreferences').addEventListener('click', () => {
+    document.getElementById('changeCookieBotPreferences').addEventListener('click', () => {
         cookieBot.openDialog();
     });
 
