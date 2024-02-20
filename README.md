@@ -1,5 +1,5 @@
-# CookieBot: User Consent Management ( Google Consent Mode v2 )
-CookieBot is a JavaScript-based solution designed to help website owners manage user consents for cookies and tracking technologies in compliance with data protection regulations like GDPR and CCPA. It integrates seamlessly with Google Consent Mode v2, allowing for dynamic consent handling and ensuring a respectful and legal approach to user data.
+# FerCookieBot: User Consent Management ( Google Consent Mode v2 )
+FerCookieBot is a JavaScript-based solution designed to help website owners manage user consents for cookies and tracking technologies in compliance with data protection regulations like GDPR and CCPA. It integrates seamlessly with Google Consent Mode v2, allowing for dynamic consent handling and ensuring a respectful and legal approach to user data.
 
 ## Features
 **Consent Dialog:** A customizable dialog prompts users for their cookie preferences, enhancing transparency and control over personal data processing.
@@ -12,23 +12,23 @@ CookieBot is a JavaScript-based solution designed to help website owners manage 
 
 **Security and Isolation:** Adheres to domain-specific storage rules, safeguarding user preferences and ensuring data isolation in line with web security standards.
 
-**To integrate CookieBot into your website, follow these steps:**
+**To integrate FerCookieBot into your website, follow these steps:**
 
 ## Installation & Initialization
-Include the CookieBot css in your project.
+Include the FerCookieBot css in your project.
 
     <link  rel="stylesheet"  href="css/fer-cookiebot.css">
 
-Include the CookieBot script in your project.
+Include the FerCookieBot script in your project.
 
-Create an instance of the CookieBot class with your Google Tag ID:
+Create an instance of the FerCookieBot class with your Google Tag ID:
 
     import FerCookieBot from './path/to/fer-cookiebot.js';
     /* ADD YOUR GTAG ID, OPTIONS - CREATES GTAG/GA4 TAG AND INITIALIZE COOKIES */
     const  cookieBot  =  new  FerCookieBot('YOUR_GOOGLE_TAG_ID', cookieBotOptions);
 
 ## Customization
-CookieBot allows for extensive customization through options passed at initialization. This enables you to tailor the consent dialog to fit your website's style and requirements, as well as to specify the exact text and titles for various cookie categories and consent information.
+FerCookieBot allows for extensive customization through options passed at initialization. This enables you to tailor the consent dialog to fit your website's style and requirements, as well as to specify the exact text and titles for various cookie categories and consent information.
 
     const cookieBotOptions = {
         title: "Your Consent Title",
