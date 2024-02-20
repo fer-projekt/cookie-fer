@@ -8,10 +8,9 @@ CookieBot is a JavaScript-based solution designed to help website owners manage 
 
 **Dynamic Preference Management:** Users can modify their consent choices at any time, providing ongoing compliance and flexibility.
 
-**Integration with Google Tag Manager:** Adjusts tracking functionalities based on user consents, ensuring compliance while maintaining the utility of analytics and advertising cookies.
+**Google Tag Manager Integration**: Seamlessly integrates with Google Tag Manager (`gtag.js`), enabling or disabling specific tracking functionalities based on the obtained consents, ensuring compliance while maintaining the utility of analytics and advertising cookies.
 
 **Security and Isolation:** Adheres to domain-specific storage rules, safeguarding user preferences and ensuring data isolation in line with web security standards.
-Getting Started
 
 **To integrate CookieBot into your website, follow these steps:**
 
