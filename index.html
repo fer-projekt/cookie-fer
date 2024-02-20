@@ -7,45 +7,23 @@
     <link rel="stylesheet" href="css/fer-cookiebot.css">
 </head>
 <body>
-    <dialog id="consentDialog">
-		<form method="dialog">
-			<strong class="consent-title" id="consent_title"></strong>
-			<label class="consent-item">
-				<input type="checkbox" id="necessary_cookies" disabled checked>
-			</label>
-			<label class="consent-item">
-				<input type="checkbox" id="ad_storage">
-			</label>
-			<label class="consent-item">
-				<input type="checkbox" id="ad_user_data">
-			</label>
-			<label class="consent-item">
-				<input type="checkbox" id="ad_personalization">
-			</label>
-			<label class="consent-item">
-				<input type="checkbox" id="analytics_storage">
-			</label>
-			<div id="consent_text" class="mt-2"></div>
-			<button id="savePreferences" class="consent-button"></button>
-		</form>
-	</dialog>
-
-    <!-- DODATI U COOKIE POLICY POKRETANJE POPUPA -->
-    <span id="changeCookieBotPreferences">Promjeni postavke</span>
-
+	<!-- ADD DIALOG HTML -->
+    <dialog id="consentDialog"></dialog>
+    <!-- ADD TO COKIES POLICY FOR STARTING DIALOG -->
+    <span id="changeCookieBotPreferences">Change Cookiebot Preferences</span>
 	<script type="module">
 		import FerCookieBot from './js/fer-cookiebot.js';
 		/* DEFINE OPTIONS */
 		const cookieBotOptions = {
-			title: "Postavke pristanka",
-			necessary_cookies_title: "Nužni kolačići",
-			ad_storage_title: "Oglašavački kolačići",
-			ad_user_data_title: "Korištenje podataka o oglašavanju",
-			ad_personalization_title: "Personalizacija oglasa",
-			analytics_storage_title: "Kolačići analitike",
-			buton_title: "Spremi postavke",
-			consent_text: "Ova web-stranica koristi kolačiće. Kolačiće upotrebljavamo kako bismo personalizirali sadržaj i oglase, omogućili značajke društvenih medija i analizirali promet.",
-			consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Opširnije</a>",
+			title: "Your Consent Title",
+			necessary_cookies_title: "Necessary Cookies",
+			ad_storage_title: "Advertising Cookies",
+			ad_user_data_title: "Use of Advertising Data",
+			ad_personalization_title: "Ad Personalization",
+			analytics_storage_title: "Analytics Cookies",
+			button_title: "Save Settings",
+			consent_text: "This website uses cookies. We use cookies to personalize content and ads, provide social media features, and analyze our traffic.",
+			consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Learn More</a>",
 		};
 		/* ADD YOUR GTAG ID, OPTIONS - CREATES GTAG/GA4 TAG AND INITIALIZE COOKIES */
 		const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', cookieBotOptions);

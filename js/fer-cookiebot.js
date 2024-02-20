@@ -3,24 +3,25 @@
 class FerCookieBot {
     constructor(googleTagId, options = {}) {
         this.googleTagId = googleTagId;
-        this.dialogId = 'consentDialog'; 
+        this.dialogId = 'consentDialog';
 
         this.options = {
-            title: "Postavke pristanka",
-            necessary_cookies_title: "Nužni kolačići",
-            ad_storage_title: "Oglašavački kolačići",
-            ad_user_data_title: "Korištenje podataka o oglašavanju",
-            ad_personalization_title: "Personalizacija oglasa",
-            analytics_storage_title: "Kolačići analitike",
-            buton_title: "Spremi postavke",
-            consent_text: "Ova web-stranica koristi kolačiće. Kolačiće upotrebljavamo kako bismo personalizirali sadržaj i oglase, omogućili značajke društvenih medija i analizirali promet.",
-            consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Opširnije</a>",
+            title: "Your Consent Title",
+            necessary_cookies_title: "Necessary Cookies",
+            ad_storage_title: "Advertising Cookies",
+            ad_user_data_title: "Use of Advertising Data",
+            ad_personalization_title: "Ad Personalization",
+            analytics_storage_title: "Analytics Cookies",
+            button_title: "Save Settings",
+            consent_text: "This website uses cookies. We use cookies to personalize content and ads, provide social media features, and analyze our traffic.",
+            consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Learn More</a>",
             ...options
         };
 
         this.loadGTagScript().then(() => {
             this.initDataLayer();
             this.initializeConsentMode();
+            this.createConsentDialog();
             this.loadConsentSettings();
             this.checkDialogState();
             this.attachEventListeners();
@@ -77,9 +78,73 @@ class FerCookieBot {
         }));
     }
 
+    createConsentDialog() {
+        const dialog = document.getElementById('consentDialog');
+        // Set title
+        const titleDiv = document.createElement('div');
+        titleDiv.id = 'consent_title';
+        titleDiv.innerText = this.options.title;
+        dialog.appendChild(titleDiv);
+
+        // Create and append checkboxes and labels
+        const items = [{
+                id: 'necessary_cookies',
+                text: this.options.necessary_cookies_title,
+                disabled: true,
+                checked: true
+            },
+            {
+                id: 'ad_storage',
+                text: this.options.ad_storage_title
+            },
+            {
+                id: 'ad_user_data',
+                text: this.options.ad_user_data_title
+            },
+            {
+                id: 'ad_personalization',
+                text: this.options.ad_personalization_title
+            },
+            {
+                id: 'analytics_storage',
+                text: this.options.analytics_storage_title
+            }
+        ];
+
+        items.forEach(item => {
+            const label = document.createElement('label');
+            label.className = 'consent-item';
+
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.id = item.id;
+            if (item.disabled) input.disabled = true;
+            if (item.checked) input.checked = true;
+
+            const textNode = document.createTextNode(' ' + item.text);
+
+            label.appendChild(input);
+            label.appendChild(textNode);
+            dialog.appendChild(label);
+        });
+
+        // Set consent text
+        const consentTextDiv = document.createElement('div');
+        consentTextDiv.id = 'consent_text';
+        consentTextDiv.innerHTML = this.options.consent_text + ' ' + this.options.consent_link;
+        dialog.appendChild(consentTextDiv);
+
+        // Save preferences button
+        const saveButton = document.createElement('button');
+        saveButton.id = 'saveCookieBotPreferences';
+        saveButton.className = 'consent-button';
+        saveButton.innerText = this.options.button_title;
+        dialog.appendChild(saveButton);
+    }
+
     loadConsentSettings() {
         const consentSettings = JSON.parse(localStorage.getItem('consentSettings'));
-        
+
         /* START BUTTON */
         if (document.getElementById('changeCookieBotPreferences')) {
             document.getElementById('changeCookieBotPreferences').addEventListener('click', () => {
@@ -87,27 +152,6 @@ class FerCookieBot {
             });
             document.getElementById('consent_title').innerText = this.options.title;
         }
-
-        /* SET OPTIONS */
-        function appendTextNode(inputId, text) {
-            const inputElement = document.getElementById(inputId);
-            if (inputElement) {
-                const textNode = document.createTextNode(text);
-                inputElement.parentNode.insertBefore(textNode, inputElement.nextSibling);
-            }
-        }
-
-        appendTextNode('necessary_cookies', this.options.necessary_cookies_title);
-        appendTextNode('ad_storage', this.options.ad_storage_title);
-        appendTextNode('ad_user_data', this.options.ad_user_data_title);
-        appendTextNode('ad_personalization', this.options.ad_personalization_title);
-        appendTextNode('analytics_storage', this.options.analytics_storage_title);
-
-        document.getElementById('consent_title').innerText = this.options.title;
-        document.getElementById('savePreferences').innerText = this.options.buton_title;
-
-        document.getElementById('consent_text').innerHTML = this.options.consent_text + ' ' + this.options.consent_link;
-
         if (consentSettings) {
             document.getElementById('ad_storage').checked = consentSettings.adStorage;
             document.getElementById('ad_user_data').checked = consentSettings.adUserData;
@@ -137,15 +181,15 @@ class FerCookieBot {
     }
 
     attachEventListeners() {
-        const saveButton = document.getElementById('savePreferences');
+        const saveButton = document.getElementById('saveCookieBotPreferences');
         if (saveButton) {
             saveButton.addEventListener('click', () => {
-                this.savePreferences();
+                this.saveCookieBotPreferences();
             });
         }
     }
 
-    savePreferences() {
+    saveCookieBotPreferences() {
         const adStorage = document.getElementById('ad_storage').checked;
         const adUserData = document.getElementById('ad_user_data').checked;
         const adPersonalization = document.getElementById('ad_personalization').checked;
@@ -158,4 +202,3 @@ class FerCookieBot {
 }
 
 export default FerCookieBot;
-
