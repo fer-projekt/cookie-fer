@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fer Cookiebot</title>
+    <link rel="stylesheet" href="css/fer-cookiebot.css">
+</head>
+<body>
+    <dialog id="consentDialog">
+		<form method="dialog">
+			<strong class="consent-title" id="consent_title"></strong>
+			<label class="consent-item">
+				<input type="checkbox" id="necessary_cookies" disabled checked>
+			</label>
+			<label class="consent-item">
+				<input type="checkbox" id="ad_storage">
+			</label>
+			<label class="consent-item">
+				<input type="checkbox" id="ad_user_data">
+			</label>
+			<label class="consent-item">
+				<input type="checkbox" id="ad_personalization">
+			</label>
+			<label class="consent-item">
+				<input type="checkbox" id="analytics_storage">
+			</label>
+			<div id="consent_text" class="mt-2"></div>
+			<button id="savePreferences" class="consent-button"></button>
+		</form>
+	</dialog>
+
+    <!-- DODATI U COOKIE POLICY POKRETANJE POPUPA -->
+    <span id="changeCookieBotPreferences">Promjeni postavke</span>
+
+	<script type="module">
+		import FerCookieBot from './js/fer-cookiebot.js';
+		/* DEFINE OPTIONS */
+		const cookieBotOptions = {
+			title: "Postavke pristanka",
+			necessary_cookies_title: "Nužni kolačići",
+			ad_storage_title: "Oglašavački kolačići",
+			ad_user_data_title: "Korištenje podataka o oglašavanju",
+			ad_personalization_title: "Personalizacija oglasa",
+			analytics_storage_title: "Kolačići analitike",
+			buton_title: "Spremi postavke",
+			consent_text: "Ova web-stranica koristi kolačiće. Kolačiće upotrebljavamo kako bismo personalizirali sadržaj i oglase, omogućili značajke društvenih medija i analizirali promet.",
+			consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Opširnije</a>",
+		};
+		/* ADD YOUR GTAG ID, OPTIONS - CREATES GTAG/GA4 TAG AND INITIALIZE COOKIES */
+		const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', cookieBotOptions);
+	</script>
+
+</body>
+</html>
