@@ -1,4 +1,4 @@
-# FerCookieBot: User Consent Management ( Google Consent Mode v2 )
+# FerCookieBot: Consent Management ( Google Consent Mode v2 )
 FerCookieBot is a JavaScript-based solution designed to help website owners manage user consents for cookies and tracking technologies in compliance with data protection regulations like GDPR and CCPA. It integrates seamlessly with Google Consent Mode v2, allowing for dynamic consent handling and ensuring a respectful and legal approach to user data.
 
 ## Features
