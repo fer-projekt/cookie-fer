@@ -48,13 +48,6 @@ Implement a button allowing users to change their cookie preferences at any time
 
     <button id="changeCookieBotPreferences">Change Cookie Preferences</button>
 
-Attach an event listener to this button to trigger the consent dialog:
-
-    document.getElementById('changeCookieBotPreferences').addEventListener('click', () => {
-        cookieBot.openDialog();
-    });
-
-
 Remember to replace placeholders (like path/to/fer-cookiebot.js, YOUR_GOOGLE_TAG_ID, and links to documentation or license files) with actual paths and IDs relevant to your project. 
 
 ## License
