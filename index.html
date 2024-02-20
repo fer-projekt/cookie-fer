@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fer Cookiebot</title>
-    <link rel="stylesheet" href="css/fer-cookiebot.css">
-</head>
-<body>
-    <!-- ADD TO COKIES POLICY FOR STARTING DIALOG IF NEEDED -->
-    <span id="changeCookieBotPreferences">Change Cookiebot Preferences</span>
 
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fer Cookiebot</title>
+	<link rel="stylesheet" href="css/fer-cookiebot.css">
+</head>
+
+<body>
+	<!-- ADD TO COKIES POLICY FOR STARTING DIALOG IF NEEDED -->
+	<span id="changeCookieBotPreferences">Change Cookiebot Preferences</span>
 	<!-- INITIALIZE COOKIE BOT -->
 	<script type="module">
 		import FerCookieBot from './js/fer-cookiebot.js';
-		/* DEFINE OPTIONS */
-		const cookieBotOptions = {
-			title: "Your Consent Title",
-			necessary_cookies_title: "Necessary Cookies",
-			ad_storage_title: "Advertising Cookies",
-			ad_user_data_title: "Use of Advertising Data",
-			ad_personalization_title: "Ad Personalization",
-			analytics_storage_title: "Analytics Cookies",
-			button_title: "Save Settings",
-			consent_text: "This website uses cookies. We use cookies to personalize content and ads, provide social media features, and analyze our traffic.",
-			consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Learn More</a>",
-		};
-		/* ADD YOUR GTAG ID, OPTIONS - CREATES GTAG/GA4 TAG AND INITIALIZE COOKIES */
-		const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', cookieBotOptions);
+		window.addEventListener("load", (event) => {
+			/* DEFINE OPTIONS */
+			const cookieBotOptions = {
+				title: "Your Consent Title",
+				necessary_cookies_title: "Necessary Cookies",
+				ad_storage_title: "Advertising Cookies",
+				ad_user_data_title: "Use of Advertising Data",
+				ad_personalization_title: "Ad Personalization",
+				analytics_storage_title: "Analytics Cookies",
+				button_title: "Save Settings",
+				consent_text: "This website uses cookies. We use cookies to personalize content and ads, provide social media features, and analyze our traffic.",
+				consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Learn More</a>",
+			};
+			/* ADD YOUR GTAG ID, OPTIONS - CREATES GTAG/GA4 TAG AND INITIALIZE COOKIES */
+			const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', cookieBotOptions);
+		});
 	</script>
 </body>
+
 </html>
