@@ -1,5 +1,18 @@
 # FerCookieBot: Enhanced Consent Management for Google Consent v2 and Facebook Tracking
+
 FerCookieBot is an advanced JavaScript solution designed for website owners to manage user consents for cookies and tracking technologies, ensuring compliance with data protection regulations like GDPR and CCPA. It now seamlessly integrates with both Google Consent Mode v2 and Facebook Pixel, offering dynamic consent handling and a respectful, legal approach to user data across major advertising platforms.
+
+FerCookieBot enhances the integration of tracking technologies on your website by automatically generating and managing the necessary script codes for Google Analytics (via gtag.js) and Facebook Pixel. This feature simplifies the setup process, ensuring that your website complies with user consent preferences while eliminating the need for manual code insertion for these services.
+
+## Automated Script Injection
+
+Upon initialization, FerCookieBot dynamically inserts the Google Analytics and Facebook Pixel scripts into your webpage based on the provided identifiers (Google Tag ID and Facebook Pixel ID). This automation is designed to respect the consent choices made by your users, loading these tracking technologies only when permission has been granted, thereby adhering to privacy regulations such as GDPR and CCPA.
+
+## Remove Existing Tracking Scripts: 
+
+When initializing FerCookieBot, pass your valid Google Tag ID and Facebook Pixel ID (if necessary) as arguments to the constructor.
+
+If you have previously added Google Analytics or Facebook Pixel scripts directly to your website's HTML, remove those scripts to prevent duplicate tracking and ensure that data collection is managed solely through FerCookieBot.
 
 ## Features
 
