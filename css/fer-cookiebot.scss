@@ -1,71 +1,77 @@
 #consentDialog {
-	top: initial;
-	left: initial;
-	right: 15px;
-	bottom: 15px;
-	border: none;
-	padding: 1rem;
-	max-width: 280px;
-	font-family: sans-serif;
-	form {
-		padding: 0 !important;
-		margin: 0 !important;
-		background-color: transparent !important;
-	}
-	.consent-item {
-		font-size: 14px;
-		display: flex;
-		align-items: center;
+  top: initial;
+  left: initial;
+  right: 15px;
+  bottom: 15px;
+  border: none;
+  padding: 1rem;
+  max-width: 280px;
+  font-family: sans-serif;
 
-		input {
-			margin-right: 5px;
-		}
+  form {
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: transparent !important;
+  }
 
-		&:not(:last-child) {
-			margin-bottom: 5px;
-		}
-	}
-	&::backdrop {
-		background: rgb(0 0 0 / 25%);
-	}
+  .consent-item {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
 
-	#consent_title {
-		display: block;
-		margin-bottom: 10px;
-		font-weight: bold;
-	}
-	#consent_text {
-		margin-top: 5px;
-	} 
-	#saveCookieBotPreferences {
-		letter-spacing: 1px;
-		margin-top: 15px;
-		width: 100%;
-		padding: 10px 15px;
-		font-size: 12px;
-		font-weight: bold;
-		text-transform: uppercase;
-		transition: all .16s ease;
-		cursor: pointer;
-		background-color: black;
-		color: white;
-		&:hover {
-			background-color: white;
-			color: initial;
-		}
-	}
+    input {
+      margin-right: 5px;
+    }
 
-	#consent_text {
-		font-size: 13px;
-	}
+    &:not(:last-child) {
+      margin-bottom: 5px;
+    }
+  }
 
-	&::backdrop {
-		backdrop-filter: blur(2px);
-	}
+  &::backdrop {
+    background: rgb(0 0 0 / 25%);
+  }
+
+  #consent_title {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  #consent_text {
+    margin-top: 5px;
+  }
+
+  #saveCookieBotPreferences {
+    letter-spacing: 1px;
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all .16s ease;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+
+    &:hover {
+      background-color: white;
+      color: initial;
+    }
+  }
+
+  #consent_text {
+    font-size: 13px;
+  }
+
+  &::backdrop {
+    backdrop-filter: blur(2px);
+  }
 }
 
 #changeCookieBotPreferences {
-	appearance: none;
-	color: rgb(99, 99, 255);
-	cursor: pointer;
+  appearance: none;
+  color: rgb(99, 99, 255);
+  cursor: pointer;
 }
