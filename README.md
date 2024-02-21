@@ -1,4 +1,4 @@
-# FerCookieBot: Enhanced Consent Management for Google Consent v2 and Facebook Tracking
+# FerCookieBot: JavaScript Consent Management for Google Consent v2 and Facebook Tracking
 
 FerCookieBot is JavaScript solution designed for website owners to manage user consents for cookies and tracking technologies, ensuring compliance with data protection regulations like GDPR and CCPA. It now seamlessly integrates with both Google Consent Mode v2 and Facebook Pixel, offering dynamic consent handling and a respectful, legal approach to user data across major advertising platforms.
 

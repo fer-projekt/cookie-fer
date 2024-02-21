@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fer-plus/cookiebot.git"
+    "url": "git+https://github.com/fer-projekt/cookiebot.git"
   },
   "keywords": [
     "Cookiebot",
@@ -18,14 +18,14 @@
     "Facebook",
     "Pixel",
     "JavaScript",
-    "lightweight",
-    "privacy",
-    "translations"
+    "Lightweight",
+    "Privacy",
+    "Translations"
   ],
   "author": "Fer Projekt",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fer-plus/cookiebot/issues"
+    "url": "https://github.com/fer-projekt/cookiebot/issues"
   },
-  "homepage": "https://github.com/fer-plus/cookiebot#readme"
+  "homepage": "https://github.com/fer-projekt/cookiebot#readme"
 }
