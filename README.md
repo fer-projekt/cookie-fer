@@ -44,15 +44,15 @@ Include the FerCookieBot script in your project.
 
 Create an instance of the FerCookieBot class with your Google Tag ID and Facebook Pixel ID (Pixel and options are optional):
 
-    import FerCookieBot from './path/to/fer-cookiebot.js';
-    const cookieBotOptions = {
-        // Your customization options / translations
-    };
-    /* ADD YOUR GTAG ID, PIXEL_ID, OPTIONS - CREATES GTAG/GA4 TAG, PIXEL TAG AND INITIALIZE COOKIES */
-    const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID');
-    /* const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', 'YOUR_FACEBOOK_PIXEL_ID', cookieBotOptions); */
-
-
+    <script type="module">
+        import FerCookieBot from './js/fer-cookiebot.js';
+        const cookieBotOptions = {
+            // Your customization options / translations
+        };
+        /* ADD YOUR GTAG ID, PIXEL_ID, OPTIONS - CREATES GTAG/GA4 TAG, PIXEL TAG AND INITIALIZE COOKIES */
+        const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID');
+        /* const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', 'YOUR_FACEBOOK_PIXEL_ID', cookieBotOptions); */
+    </script>
 
 ## Multi-Language Support
 

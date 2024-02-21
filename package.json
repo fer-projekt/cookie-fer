@@ -24,6 +24,7 @@
   ],
   "author": "Fer Projekt",
   "license": "MIT",
+  "private": false,
   "bugs": {
     "url": "https://github.com/fer-projekt/cookiebot/issues"
   },
