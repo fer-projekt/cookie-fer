@@ -7,43 +7,29 @@ class FerCookieBot {
         this.facebookPixelId = facebookPixelId || null;
         this.dialogId = 'consentDialog';
         this.language = document.documentElement.lang || "en"; // Default to English
-        this.loadGTagScript().then(() => {
-            // Load translations first
-            this.translations = this.defineTranslations();
-            // Determine the language-specific translations
-            const defaultTranslationsForLanguage = this.translations[this.language] || this.translations["en"]; 
-            // Merge the language-specific translations with any provided options
-            // This ensures that any provided option overrides the corresponding default translation
-            this.translatedOptions = { ...defaultTranslationsForLanguage, ...options };
-            this.initDataLayer();
-            this.initializeConsentMode();
-            this.createConsentDialog();
-            this.loadConsentSettings();
-            this.checkDialogState();
-            this.attachEventListeners();
-        }).catch(error => {
-            console.error("Failed to load Google Tag:", error);
-        });
-    }
-
-    initDataLayer() {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push(arguments);
-    }
-
-    gtag(command, ...args) {
-        window.dataLayer.push([command, ...args]);
+        this.loadGTagScript()
+        // Load translations first
+        this.translations = this.defineTranslations();
+        // Determine the language-specific translations
+        const defaultTranslationsForLanguage = this.translations[this.language] || this.translations["en"]; 
+        // Merge the language-specific translations with any provided options
+        // This ensures that any provided option overrides the corresponding default translation
+        this.translatedOptions = { ...defaultTranslationsForLanguage, ...options };
+        this.createConsentDialog();
+        this.loadConsentSettings();
+        this.checkDialogState();
+        this.attachEventListeners();
     }
 
     loadGTagScript() {
-        return new Promise((resolve, reject) => {
-            const script = document.createElement('script');
-            script.async = true;
-            script.src = `https://www.googletagmanager.com/gtag/js?id=${this.googleTagId}`;
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.appendChild(script);
-        });
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${this.googleTagId}`;
+        document.head.appendChild(script);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', this.googleTagId);
     }
 
     addFacebookPixel() {
@@ -76,25 +62,20 @@ class FerCookieBot {
         document.body.insertBefore(noscript, document.body.firstChild);
     }
 
-    initializeConsentMode() {
-        this.gtag('js', new Date());
-        this.gtag('consent', 'default', {
+    initializeDefaultConsentMode() {
+        gtag('consent', 'default', {
             'ad_storage': 'denied',
             'ad_user_data': 'denied',
             'ad_personalization': 'denied',
             'analytics_storage': 'denied',
             'functionality_storage': 'denied',
             'personalization_storage': 'denied',
-            'security_storage': 'denied',
-            'wait_for_update': 500,
+            'security_storage': 'denied'
         });
-        this.gtag('config', this.googleTagId);
     }
 
     updateConsent(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage) {
-
-        this.gtag('consent', 'update', {
-
+        gtag('consent', 'update', {
             /* Consent Type	 */
             'ad_storage': adStorage ? 'granted' : 'denied',
             'ad_user_data': adUserData ? 'granted' : 'denied',
@@ -105,7 +86,6 @@ class FerCookieBot {
             'functionality_storage': functionalityStorage ? 'granted' : 'denied',
             'personalization_storage': personalizationStorage ? 'granted' : 'denied',
             'security_storage': securityStorage ? 'granted' : 'denied',
-
         });
         localStorage.setItem('consentSettings', JSON.stringify({
             adStorage,
@@ -121,7 +101,7 @@ class FerCookieBot {
     createConsentDialog() {
         // Create the dialog element
         const dialog = document.createElement('dialog');
-        dialog.id = 'consentDialog';
+        dialog.id = this.dialogId;
         document.body.appendChild(dialog);
         // Set the title from translated options
         const titleDiv = document.createElement('div');
@@ -183,7 +163,7 @@ class FerCookieBot {
         consentTextDiv.id = 'consent_text';
         consentTextDiv.innerHTML = this.translatedOptions.consent_text + ' ' + this.translatedOptions.consent_link;
         dialog.appendChild(consentTextDiv);
-
+     
         // Create and append the save preferences button
         const acceptAllButton = document.createElement('button');
         acceptAllButton.id = 'saveAcceptAllCookieBotPreferences';
@@ -231,6 +211,10 @@ class FerCookieBot {
             document.getElementById('functionality_storage').checked = consentSettings.functionalityStorage;
             document.getElementById('personalization_storage').checked = consentSettings.personalizationStorage;
             document.getElementById('security_storage').checked = consentSettings.securityStorage;
+            this.updateConsent(consentSettings.adStorage, consentSettings.adUserData, consentSettings.adPersonalization, consentSettings.analyticsStorage, consentSettings.functionalityStorage, consentSettings.personalizationStorage, consentSettings.securityStorage)
+        }
+        else {
+            this.initializeDefaultConsentMode();
         }
         if (consentSettings && (consentSettings.adStorage == true && consentSettings.adUserData == true)) {
             this.addFacebookPixel();
