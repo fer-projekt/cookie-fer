@@ -10,10 +10,10 @@
 
 <body>
 	<!-- ADD TO COKIES POLICY FOR STARTING DIALOG IF NEEDED -->
-	<span id="changeCookieBotPreferences">Change Cookiebot Preferences</span>
+	<span id="changeCookieBotPreferences" aria-label="Change Cookiebot Preferences" role="button">Change Cookiebot Preferences</span>
 	<!-- INITIALIZE COOKIE BOT -->
 	<script type="module">
-		import FerCookieBot from './js/fer-cookiebot.js';
+		import FerCookieBot from './js/fer-cookiebot.min.js';
 		window.addEventListener("load", (event) => {
 			// INITIALIZE COOKIE BOT 
 			const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID'); // Replace 'YOUR_GOOGLE_TAG_ID' with your actual Google Tag Manager ID, or 'YOUR_FACEBOOK_PIXEL_ID' with your actual Facebook Pixel ID ('gtagId', 'pixelId')

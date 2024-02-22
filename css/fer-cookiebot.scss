@@ -7,13 +7,7 @@
   padding: 1rem;
   max-width: 280px;
   font-family: sans-serif;
-
-  form {
-    padding: 0 !important;
-    margin: 0 !important;
-    background-color: transparent !important;
-  }
-
+  border-radius: 2px;
   .consent-item {
     font-size: 14px;
     display: flex;
@@ -40,9 +34,10 @@
 
   #consent_text {
     margin-top: 5px;
+    font-size: 13px;
   }
-
-  #saveCookieBotPreferences {
+ 
+  button {
     letter-spacing: 1px;
     margin-top: 15px;
     width: 100%;
@@ -52,17 +47,28 @@
     text-transform: uppercase;
     transition: all .16s ease;
     cursor: pointer;
-    background-color: black;
+
+  
+
+    border: solid 1px black;
+    background-color: #0075ff;
     color: white;
+    border-radius: 2px;
 
     &:hover {
-      background-color: white;
-      color: initial;
+      background-color: black;
+      color: white
     }
-  }
 
-  #consent_text {
-    font-size: 13px;
+    +button {
+      background-color: white;
+      color: black;
+
+      &:hover {
+        background-color: rgb(241, 241, 241);
+        color: initial;
+      }
+    }
   }
 
   &::backdrop {
