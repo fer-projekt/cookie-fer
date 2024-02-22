@@ -21,15 +21,18 @@ class FerCookieBot {
         this.attachEventListeners();
     }
 
+    gtag() {
+        dataLayer.push(arguments);
+    }
+
     loadGTagScript() {
         const script = document.createElement('script');
         script.async = true;
         script.src = `https://www.googletagmanager.com/gtag/js?id=${this.googleTagId}`;
         document.head.appendChild(script);
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', this.googleTagId);
+        this.gtag('js', new Date());
+        this.gtag('config', this.googleTagId);
     }
 
     addFacebookPixel() {
@@ -63,7 +66,7 @@ class FerCookieBot {
     }
 
     initializeDefaultConsentMode() {
-        gtag('consent', 'default', {
+        this.gtag('consent', 'default', {
             'ad_storage': 'denied',
             'ad_user_data': 'denied',
             'ad_personalization': 'denied',
@@ -75,12 +78,11 @@ class FerCookieBot {
     }
 
     updateConsent(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage) {
-        gtag('consent', 'update', {
+        this.gtag('consent', 'update', {
             /* Consent Type	 */
             'ad_storage': adStorage ? 'granted' : 'denied',
             'ad_user_data': adUserData ? 'granted' : 'denied',
             'ad_personalization': adPersonalization ? 'granted' : 'denied',
-
             /* STORAGE TYPE */
             'analytics_storage': analyticsStorage ? 'granted' : 'denied',
             'functionality_storage': functionalityStorage ? 'granted' : 'denied',
