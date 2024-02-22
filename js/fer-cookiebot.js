@@ -2,17 +2,21 @@
 
 class FerCookieBot {
     
-    constructor(googleTagId, facebookPixelId,  options = {}) {
+    constructor(googleTagId, facebookPixelId, options = {}) {
         this.googleTagId = googleTagId;
         this.facebookPixelId = facebookPixelId || null;
         this.dialogId = 'consentDialog';
-        this.options = options;
+        this.language = document.documentElement.lang || "en"; // Default to English
         this.loadGTagScript().then(() => {
+            // Load translations first
+            this.translations = this.defineTranslations();
+            // Determine the language-specific translations
+            const defaultTranslationsForLanguage = this.translations[this.language] || this.translations["en"]; 
+            // Merge the language-specific translations with any provided options
+            // This ensures that any provided option overrides the corresponding default translation
+            this.translatedOptions = { ...defaultTranslationsForLanguage, ...options };
             this.initDataLayer();
             this.initializeConsentMode();
-            this.translations = this.defineTranslations();
-            this.language = document.documentElement.lang || "en"; // Default to English
-            this.translatedOptions = this.translations[this.language] || this.translations["en"]; // Fallback to English
             this.createConsentDialog();
             this.loadConsentSettings();
             this.checkDialogState();
@@ -101,6 +105,7 @@ class FerCookieBot {
             'functionality_storage': functionalityStorage ? 'granted' : 'denied',
             'personalization_storage': personalizationStorage ? 'granted' : 'denied',
             'security_storage': securityStorage ? 'granted' : 'denied',
+
         });
         localStorage.setItem('consentSettings', JSON.stringify({
             adStorage,

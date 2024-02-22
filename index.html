@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="hr">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Fer Cookiebot</title>
 	<link rel="stylesheet" href="css/fer-cookiebot.css">
 </head>
-
 <body>
 	<!-- ADD TO COKIES POLICY FOR STARTING DIALOG IF NEEDED -->
 	<span id="changeCookieBotPreferences" aria-label="Change Cookiebot Preferences" role="button">Change Cookiebot Preferences</span>
@@ -15,8 +13,8 @@
 	<script type="module">
 		import FerCookieBot from './js/fer-cookiebot.min.js';
 		window.addEventListener("load", (event) => {
-			// INITIALIZE COOKIE BOT 
-			const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID'); // Replace 'YOUR_GOOGLE_TAG_ID' with your actual Google Tag Manager ID, or 'YOUR_FACEBOOK_PIXEL_ID' with your actual Facebook Pixel ID ('gtagId', 'pixelId')
+			// FerCookieBot accepts three arguments ('YOUR_GOOGLE_TAG_ID', facebookPixelId or null, options)
+			const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID'); 
 		});
 	</script>
 </body>

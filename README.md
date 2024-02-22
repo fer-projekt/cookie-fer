@@ -45,7 +45,7 @@ Include the FerCookieBot script in your project.
 Create an instance of the FerCookieBot class with your Google Tag ID and Facebook Pixel ID (Pixel and options are optional):
 
     <script type="module">
-        import FerCookieBot from './js/fer-cookiebot.js';
+        import FerCookieBot from './js/fer-cookiebot.min.js';
         const cookieBotOptions = {
             // Your customization options / translations
         };
@@ -72,6 +72,7 @@ FerCookieBot supports the following languages out of the box:
  - Dutch (nl) 
  - Icelandic (is) 
  - French (fr)
+ - Hungarian (hu)
  - Croatian (hr)
 
 **Customizing Language Content** 
@@ -79,14 +80,19 @@ FerCookieBot supports the following languages out of the box:
 FerCookieBot allows for  customization through options passed at initialization. This enables you  to specify the exact text and titles for various cookie categories and consent information.
 
     const cookieBotOptions = {
-        title: "Your Consent Title",
+        title: "Consent for the Use of Personal Data",
         necessary_cookies_title: "Necessary Cookies",
         ad_storage_title: "Advertising Cookies",
         ad_user_data_title: "Use of Advertising Data",
         ad_personalization_title: "Ad Personalization",
         analytics_storage_title: "Analytics Cookies",
-        button_title: "Save Settings",
-        consent_text: "This website uses cookies. We use cookies to personalize content and ads, provide social media features, and analyze our traffic.",
+        functionality_storage_title: "Functionality Cookies",
+        personalization_storage_title: "Personalization Cookies",
+        security_storage_title: "Security Cookies",
+        button_title: "Save Selected",
+        accept_all_button_title: "Accept All",
+        refuse_all_button_title: "Refuse All",
+        consent_text: "This website uses cookies. We use cookies to personalize content and ads, to provide social media features, and to analyze our traffic.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Learn More</a>",
     };
 
