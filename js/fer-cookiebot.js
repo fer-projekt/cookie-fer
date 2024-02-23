@@ -104,6 +104,7 @@ class FerCookieBot {
         // Create the dialog element
         const dialog = document.createElement('div');
         dialog.id = this.dialogId;
+        dialog.style.display = 'none';
         document.body.appendChild(dialog);
         // Set the title from translated options
         const titleDiv = document.createElement('div');
