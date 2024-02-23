@@ -1,4 +1,5 @@
 #consentDialog {
+  position: absolute;
   top: initial;
   left: initial;
   right: 15px;
@@ -8,10 +9,24 @@
   max-width: 320px;
   font-family: sans-serif;
   border-radius: 2px;
+  line-height: 1.25;
+  background-color: white;
+  user-select: text;
+  overflow: auto;
+  max-height: calc(100% - 2em - 6px);
+  display: block;
+  width: fit-content;
+  height: fit-content;
+  background-color: canvas;
+  color: canvastext;
+  margin: auto;
+  display: none;
+  border: solid 1px rgb(231, 231, 231);
   .consent-item {
     font-size: 14px;
     display: flex;
     align-items: center;
+    line-height: 1.25;
 
     input {
       margin-right: 5px;
@@ -35,8 +50,9 @@
   #consent_text {
     margin-top: 5px;
     font-size: 13px;
+    line-height: 1.25;
   }
- 
+
   button {
     letter-spacing: 1px;
     margin-top: 15px;
@@ -48,7 +64,7 @@
     transition: all .16s ease;
     cursor: pointer;
 
-  
+
 
     border: solid 1px black;
     background-color: #0075ff;

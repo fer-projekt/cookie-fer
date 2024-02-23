@@ -102,7 +102,7 @@ class FerCookieBot {
 
     createConsentDialog() {
         // Create the dialog element
-        const dialog = document.createElement('dialog');
+        const dialog = document.createElement('div');
         dialog.id = this.dialogId;
         document.body.appendChild(dialog);
         // Set the title from translated options
@@ -234,13 +234,13 @@ class FerCookieBot {
 
     openDialog() {
         const dialog = document.getElementById(this.dialogId);
-        if (dialog) dialog.showModal();
+        if (dialog) dialog.style.display = 'block';
         else console.error('Dialog element not found');
     }
 
     closeDialog() {
         const dialog = document.getElementById(this.dialogId);
-        if (dialog) dialog.close();
+        if (dialog) dialog.style.display = 'none';
     }
 
     attachEventListeners() {
