@@ -37,7 +37,7 @@ class FerCookieBot {
 
     addFacebookPixel() {
         // console.log('Adding Facebook Pixel...');
-        if (!this.facebookPixelId || !/^\d{15}$/.test(this.facebookPixelId)) {
+        if (!this.facebookPixelId || !/^\d{16}$/.test(this.facebookPixelId)) {
             return;
         }
         !function(f,b,e,v,n,t,s)
