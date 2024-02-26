@@ -1,5 +1,5 @@
 #consentDialog {
-  position: absolute;
+  position: fixed;
   top: initial;
   left: initial;
   right: 15px;
@@ -21,6 +21,7 @@
   color: canvastext;
   margin: auto;
   border: solid 1px rgb(231, 231, 231);
+  z-index: 99999 !important;
   .consent-item {
     font-size: 14px;
     display: flex;
