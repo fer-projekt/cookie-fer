@@ -21,9 +21,14 @@
     font-size: 11px;
     display: inline-flex;
     align-items: center;
-    /* &:not(:last-of-type) {
-      margin-bottom: 2px;
-    } */
+
+    input {
+      margin-right: 5px;
+    }
+
+    &:not(:last-of-type) {
+      margin-bottom: 3px;
+    }
   }
 
   .consent-item,
@@ -38,7 +43,7 @@
 
   #consent_title {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     font-weight: bold;
     font-size: 14px;
   }
@@ -67,13 +72,16 @@
     align-self: stretch;
     line-height: 1.25;
     padding: 5px;
+
     &:hover {
       background-color: rgb(63, 133, 6);
       color: white
     }
+
     +button {
       background-color: #f4f9ff;
       color: rgba(0, 119, 255, 0.75);
+
       &:hover {
         background-color: rgb(241, 241, 241);
         color: initial;
@@ -91,9 +99,11 @@
     right: 15px;
     bottom: 15px;
     border: solid 1px rgb(231, 231, 231);
+
     button {
       padding: 7px 5px;
     }
+
     .consent-item,
     button,
     #consent_text {
