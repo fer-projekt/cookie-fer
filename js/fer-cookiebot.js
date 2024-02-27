@@ -166,6 +166,11 @@ class FerCookieBot {
         consentTextDiv.id = 'consent_text';
         consentTextDiv.innerHTML = this.translatedOptions.consent_text + ' ' + this.translatedOptions.consent_link;
         dialog.appendChild(consentTextDiv);
+
+        // Set the consent text from translated options
+        const consentButtonsDiv = document.createElement('div');
+        consentButtonsDiv.id = 'consent_buttons';
+        dialog.appendChild(consentButtonsDiv);
      
         // Create and append the save preferences button
         const acceptAllButton = document.createElement('button');
@@ -185,9 +190,9 @@ class FerCookieBot {
         saveButton.className = 'consent-button';
         saveButton.innerText = this.translatedOptions.button_title;
 
-        dialog.appendChild(acceptAllButton);
-        dialog.appendChild(refuseAllButton);
-        dialog.appendChild(saveButton);
+        consentButtonsDiv.appendChild(acceptAllButton);
+        consentButtonsDiv.appendChild(refuseAllButton);
+        consentButtonsDiv.appendChild(saveButton);
     }
 
     acceptAndSaveAll() {

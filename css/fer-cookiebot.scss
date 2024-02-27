@@ -1,40 +1,35 @@
 #consentDialog {
   position: fixed;
   top: initial;
-  left: initial;
-  right: 15px;
-  bottom: 15px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   border: none;
-  padding: 12px;
-  max-width: 320px;
-  font-family: sans-serif;
-  border-radius: 2px;
+  padding: 10px;
+  max-width: 100%;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   line-height: 1.25;
   background-color: white;
-  user-select: text;
   overflow: auto;
-  max-height: calc(100% - 2em - 6px);
   display: block;
-  width: fit-content;
-  height: fit-content;
   background-color: canvas;
-  color: canvastext;
-  margin: auto;
-  border: solid 1px rgb(231, 231, 231);
+  border-top: solid 1px rgb(231, 231, 231);
   z-index: 99999 !important;
+
   .consent-item {
-    font-size: 14px;
-    display: flex;
+    width: 50%;
+    font-size: 11px;
+    display: inline-flex;
     align-items: center;
-    line-height: 1.25;
+    /* &:not(:last-of-type) {
+      margin-bottom: 2px;
+    } */
+  }
 
-    input {
-      margin-right: 5px;
-    }
-
-    &:not(:last-child) {
-      margin-bottom: 5px;
-    }
+  .consent-item,
+  button,
+  #consent_text {
+    font-size: 11px;
   }
 
   &::backdrop {
@@ -43,33 +38,35 @@
 
   #consent_title {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     font-weight: bold;
+    font-size: 14px;
   }
 
   #consent_text {
     margin-top: 5px;
-    font-size: 13px;
+    margin-bottom: 5px;
     line-height: 1.25;
   }
 
+  #consent_buttons {
+    display: flex;
+    align-items: center;
+  }
+
   button {
-    letter-spacing: 1px;
-    margin-top: 15px;
     width: 100%;
-    padding: 10px 15px;
-    font-size: 12px;
-    font-weight: bold;
+    font-weight: bolder;
     text-transform: uppercase;
     transition: all .16s ease;
     cursor: pointer;
-
-
-
-    border: solid 1px black;
+    border: solid 2px white;
     background-color: #0075ff;
     color: white;
     border-radius: 2px;
+    align-self: stretch;
+    line-height: 1.25;
+    padding: 5px;
 
     &:hover {
       background-color: black;
@@ -77,8 +74,8 @@
     }
 
     +button {
-      background-color: white;
-      color: black;
+      background-color: #f4f9ff;
+      color: #0075ff;
 
       &:hover {
         background-color: rgb(241, 241, 241);
@@ -89,6 +86,20 @@
 
   &::backdrop {
     backdrop-filter: blur(2px);
+  }
+
+  @media screen and (min-width: 570px) {
+    max-width: 340px;
+    left: initial;
+    right: 15px;
+    bottom: 15px;
+    border: solid 1px rgb(231, 231, 231);
+
+    .consent-item,
+    button,
+    #consent_text {
+      font-size: 12px;
+    }
   }
 }
 
