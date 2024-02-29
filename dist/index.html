@@ -8,7 +8,7 @@
 <body style="background-color: aliceblue;">
 	<span id="changeCookieBotPreferences" aria-label="Change Cookiebot Preferences" role="button">Change Cookiebot Preferences</span>
 	<script type="module">
-		import FerCookieBot from 'https://cdn.fer.plus/cookiebot-cdn/dist/fer-cookiebot.min.js';
+		import FerCookieBot from 'https://cdn.fer.plus/cookiebot/dist/fer-cookiebot.min.js';
 		window.addEventListener("load", () => {
 			setTimeout(() => {
 				loadCSS(); 
@@ -18,7 +18,7 @@
 		});
 		const loadCSS = () => {
 			const link = document.createElement('link');
-			link.href = 'https://cdn.fer.plus/cookiebot-cdn/dist/fer-cookiebot.css';
+			link.href = 'https://cdn.fer.plus/cookiebot/dist/fer-cookiebot.css';
 			link.type = 'text/css';
 			link.rel = 'stylesheet';
 			document.head.appendChild(link);
