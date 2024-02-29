@@ -107,3 +107,7 @@ Remember to replace placeholders (like path/to/fer-cookiebot.js, YOUR_GOOGLE_TAG
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## BUILD
+
+npm run build  

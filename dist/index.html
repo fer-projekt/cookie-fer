@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fer Cookiebot</title>
+</head>
+<body style="background-color: aliceblue;">
+	<span id="changeCookieBotPreferences" aria-label="Change Cookiebot Preferences" role="button">Change Cookiebot Preferences</span>
+	<script type="module">
+		import FerCookieBot from 'https://cdn.fer.plus/cookiebot-cdn/dist/fer-cookiebot.min.js';
+		window.addEventListener("load", () => {
+			setTimeout(() => {
+				loadCSS(); 
+				// FerCookieBot accepts three arguments ('YOUR_GOOGLE_TAG_ID', facebookPixelId or null, options)
+				const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID');
+			}, 3000);
+		});
+		const loadCSS = () => {
+			const link = document.createElement('link');
+			link.href = 'https://cdn.fer.plus/cookiebot-cdn/dist/fer-cookiebot.css';
+			link.type = 'text/css';
+			link.rel = 'stylesheet';
+			document.head.appendChild(link);
+		};
+	</script>
+</body>
+
+</html>
