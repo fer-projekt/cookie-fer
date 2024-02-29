@@ -13,8 +13,9 @@
 		import FerCookieBot from './dist/fer-cookiebot.min.js';
 			window.addEventListener("load", () => {
 				setTimeout(() => {
-					// FerCookieBot accepts three arguments ('YOUR_GOOGLE_TAG_ID', facebookPixelId or null, options)
-					const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID');
+					const cssStyleSheet = "/dist/fer-cookiebot.min.css";
+					// FerCookieBot accepts three arguments ('YOUR_GOOGLE_TAG_ID', cssStyleSheet, facebookPixelId or null, options)
+					const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', cssStyleSheet);
 				}, 2800);
 			});
 	</script>

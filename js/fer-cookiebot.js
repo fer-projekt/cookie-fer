@@ -2,8 +2,9 @@
 
 class FerCookieBot {
 
-  constructor(googleTagId, facebookPixelId, options = {}) {
+  constructor(googleTagId, cssStyleSheet, facebookPixelId, options = {}) {
     this.googleTagId = googleTagId;
+    this.cssStyleSheet = cssStyleSheet || null;
     this.facebookPixelId = facebookPixelId || null;
     this.dialogId = 'consentDialog';
     this.language = document.documentElement.lang || "en"; // Default to English
@@ -108,11 +109,10 @@ class FerCookieBot {
       securityStorage
     }));
   }
-
   loadCSS = () => {
     return new Promise((resolve, reject) => {
       const link = document.createElement('link');
-      link.href = 'https://cdn.fer.plus/cookiebot/dist/fer-cookiebot.min.css';
+      link.href = this.cssStyleSheet;
       link.type = 'text/css';
       link.rel = 'stylesheet';
       link.onload = () => resolve("CSS loaded successfully");
