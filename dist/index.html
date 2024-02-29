@@ -11,18 +11,11 @@
 		import FerCookieBot from 'https://cdn.fer.plus/cookiebot/dist/fer-cookiebot.min.js';
 		window.addEventListener("load", () => {
 			setTimeout(() => {
-				loadCSS(); 
 				// FerCookieBot accepts three arguments ('YOUR_GOOGLE_TAG_ID', facebookPixelId or null, options)
 				const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID');
-			}, 3000);
+			}, 2800);
+		
 		});
-		const loadCSS = () => {
-			const link = document.createElement('link');
-			link.href = 'https://cdn.fer.plus/cookiebot/dist/fer-cookiebot.min.css';
-			link.type = 'text/css';
-			link.rel = 'stylesheet';
-			document.head.appendChild(link);
-		};
 	</script>
 </body>
 
