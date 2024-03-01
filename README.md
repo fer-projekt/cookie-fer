@@ -94,6 +94,7 @@ FerCookieBot allows for  customization through options passed at initialization.
         refuse_all_button_title: "Refuse All",
         consent_text: "This website uses cookies. We use cookies to personalize content and ads, to provide social media features, and to analyze our traffic.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Learn More</a>",
+        change_cookiebot_preferences: "Change Cookiebot Preferences",
     };
 
 ## Preference Button

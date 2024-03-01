@@ -269,12 +269,14 @@ class FerCookieBot {
     }
     /* START BUTTON */
 
-    if (document.getElementById('changeCookieBotPreferences')) {
+    const changeCBPrefButton = document.getElementById('changeCookieBotPreferences');
+    if (changeCBPrefButton) {
+      changeCBPrefButton.innerText = this.translatedOptions.change_cookiebot_preferences;
       var dialogCreated = false;
       if (!dialogState || dialogState === 'closed') {
-        document.getElementById('changeCookieBotPreferences').style.cursor = 'pointer';
+        changeCBPrefButton.style.cursor = 'pointer';
       }
-      document.getElementById('changeCookieBotPreferences').addEventListener('click', (e) => {
+      changeCBPrefButton.addEventListener('click', (e) => {
         if (!dialogCreated) {
           this.createConsentDialog().then(() => {
             this.openDialog();
@@ -360,6 +362,7 @@ class FerCookieBot {
         refuse_all_button_title: "Odbaci sve",
         consent_text: "Ova web-stranica koristi kolačiće. Kolačiće upotrebljavamo kako bismo personalizirali sadržaj i oglase, omogućili značajke društvenih medija i analizirali promet.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Opširnije</a>",
+        change_cookiebot_preferences: "Promijeni postavke Cookiebota",
       },
       en: {
         title: "Consent for the Use of Personal Data",
@@ -376,6 +379,8 @@ class FerCookieBot {
         refuse_all_button_title: "Refuse All",
         consent_text: "This website uses cookies. We use cookies to personalize content and ads, to provide social media features, and to analyze our traffic.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Learn More</a>",
+        change_cookiebot_preferences: "Change Cookiebot Preferences",
+
       },
       de: {
         title: "Zustimmung zur Verwendung persönlicher Daten",
@@ -392,6 +397,8 @@ class FerCookieBot {
         refuse_all_button_title: "Alles ablehnen",
         consent_text: "Diese Webseite verwendet Cookies. Wir verwenden Cookies, um Inhalte und Anzeigen zu personalisieren, Funktionen für soziale Medien anzubieten und unseren Verkehr zu analysieren.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Mehr erfahren</a>",
+        change_cookiebot_preferences: "Cookiebot-Einstellungen ändern",
+
       },
       it: {
         title: "Consenso per l'uso dei dati personali",
@@ -408,6 +415,8 @@ class FerCookieBot {
         refuse_all_button_title: "Rifiuta tutto",
         consent_text: "Questo sito utilizza i cookie. Utilizziamo i cookie per personalizzare contenuti e annunci, fornire funzioni dei social media e analizzare il nostro traffico.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Scopri di più</a>",
+        change_cookiebot_preferences: "Modifica le preferenze di Cookiebot",
+
       },
       ru: {
         title: "Согласие на использование личных данных",
@@ -424,6 +433,8 @@ class FerCookieBot {
         refuse_all_button_title: "Отклонить все",
         consent_text: "Этот сайт использует куки. Мы используем куки для персонализации контента и рекламы, предоставления функций социальных сетей и анализа трафика.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Узнать больше</a>",
+        change_cookiebot_preferences: "Изменить настройки Cookiebot",
+
       },
       pl: {
         title: "Zgoda na używanie danych osobowych",
@@ -440,6 +451,8 @@ class FerCookieBot {
         refuse_all_button_title: "Odrzuć wszystko",
         consent_text: "Ta strona używa ciasteczek. Używamy ciasteczek do personalizacji treści i reklam, oferowania funkcji mediów społecznościowych i analizowania naszego ruchu.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Dowiedz się więcej</a>",
+        change_cookiebot_preferences: "Zmień preferencje Cookiebota",
+
       },
       sl: {
         title: "Privolitev za uporabo osebnih podatkov",
@@ -456,6 +469,8 @@ class FerCookieBot {
         refuse_all_button_title: "Zavrni vse",
         consent_text: "Ta spletna stran uporablja piškotke. Uporabljamo piškotke za prilagajanje vsebine in oglasov, zagotavljanje funkcij socialnih medijev in analizo prometa.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Več informacij</a>",
+        change_cookiebot_preferences: "Spremeni nastavitve Cookiebota",
+
       },
       cs: {
         title: "Souhlas s používáním osobních údajů",
@@ -472,6 +487,8 @@ class FerCookieBot {
         refuse_all_button_title: "Odmítnout vše",
         consent_text: "Tento web používá cookies. Cookies používáme k personalizaci obsahu a reklam, k poskytování funkcí sociálních sítí a k analýze našeho provozu.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Více informací</a>",
+        change_cookiebot_preferences: "Změnit předvolby Cookiebotu",
+
       },
       nl: {
         title: "Toestemming voor het gebruik van persoonsgegevens",
@@ -488,6 +505,8 @@ class FerCookieBot {
         refuse_all_button_title: "Weiger alles",
         consent_text: "Deze website gebruikt cookies. We gebruiken cookies om content en advertenties te personaliseren, om sociale mediafuncties te bieden en om ons verkeer te analyseren.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Meer weten</a>",
+        change_cookiebot_preferences: "Cookiebot-voorkeuren wijzigen",
+
       },
       is: {
         title: "Samþykki fyrir notkun persónuupplýsinga",
@@ -504,6 +523,8 @@ class FerCookieBot {
         refuse_all_button_title: "Hafna öllu",
         consent_text: "Þessi vefsíða notar kökur. Við notum kökur til að sérsníða efni og auglýsingar, bjóða upp á samfélagsmiðlaeiginleika og greina umferð okkar.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Læra meira</a>",
+        change_cookiebot_preferences: "Breyta stillingum Cookiebot",
+
       },
       fr: {
         title: "Consentement pour l'utilisation des données personnelles",
@@ -520,6 +541,8 @@ class FerCookieBot {
         refuse_all_button_title: "Tout refuser",
         consent_text: "Ce site utilise des cookies. Nous utilisons des cookies pour personnaliser le contenu et les annonces, offrir des fonctionnalités de médias sociaux et analyser notre trafic.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>En savoir plus</a>",
+        change_cookiebot_preferences: "Modifier les préférences de Cookiebot",
+
       },
       hu: {
         title: "Hozzájárulás a személyes adatok használatához",
@@ -536,6 +559,8 @@ class FerCookieBot {
         refuse_all_button_title: "Összes elutasítása",
         consent_text: "Ez a weboldal sütiket használ. Sütiket használunk a tartalom és hirdetések személyre szabásához, a közösségi média funkciók biztosításához és forgalmunk elemzéséhez.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Tudj meg többet</a>",
+        change_cookiebot_preferences: "Cookiebot beállítások megváltoztatása",
+
       },
       // Add other languages...
     };
