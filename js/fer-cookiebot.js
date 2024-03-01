@@ -34,6 +34,7 @@ class FerCookieBot {
     window.dataLayer = window.dataLayer || [];
     this.gtag('js', new Date());
     this.gtag('config', this.googleTagId);
+    console.log('Google Tag Manager loaded');
   }
 
   addFacebookPixel() {
