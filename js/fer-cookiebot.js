@@ -34,7 +34,14 @@ class FerCookieBot {
     window.dataLayer = window.dataLayer || [];
     this.gtag('js', new Date());
     this.gtag('config', this.googleTagId);
-    console.log('Google Tag Manager loaded');
+    this.loadInitialConsent();
+  }
+
+  loadInitialConsent() {
+    const consentSettings = JSON.parse(localStorage.getItem('consentSettings'));
+    if (consentSettings) {
+      this.updateConsent(consentSettings.adStorage, consentSettings.adUserData, consentSettings.adPersonalization, consentSettings.analyticsStorage, consentSettings.functionalityStorage, consentSettings.personalizationStorage, consentSettings.securityStorage)
+    }
   }
 
   addFacebookPixel() {
@@ -218,6 +225,7 @@ class FerCookieBot {
         consentButtonsDiv.appendChild(acceptAllButton);
         consentButtonsDiv.appendChild(refuseAllButton);
         consentButtonsDiv.appendChild(saveButton);
+
       }).catch((error) => {
         console.error('Failed to load CSS:', error);
       });
@@ -248,7 +256,6 @@ class FerCookieBot {
       document.getElementById('functionality_storage').checked = consentSettings.functionalityStorage;
       document.getElementById('personalization_storage').checked = consentSettings.personalizationStorage;
       document.getElementById('security_storage').checked = consentSettings.securityStorage;
-      this.updateConsent(consentSettings.adStorage, consentSettings.adUserData, consentSettings.adPersonalization, consentSettings.analyticsStorage, consentSettings.functionalityStorage, consentSettings.personalizationStorage, consentSettings.securityStorage)
     } else {
       this.initializeDefaultConsentMode();
     }
