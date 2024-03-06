@@ -96,6 +96,23 @@ class FerCookieBot {
   }
 
   updateConsent(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage) {
+
+    // Push consent settings into the Data Layer for real-time access
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'consentUpdate',
+        consentSettings: {
+            adStorage,
+            adUserData,
+            adPersonalization,
+            analyticsStorage,
+            functionalityStorage,
+            personalizationStorage,
+            securityStorage
+        }
+    });
+
+    // Update consent configuration for Google Tag Manager
     this.gtag('consent', 'update', {
       /* Consent Type	 */
       'ad_storage': adStorage ? 'granted' : 'denied',
@@ -107,6 +124,8 @@ class FerCookieBot {
       'personalization_storage': personalizationStorage ? 'granted' : 'denied',
       'security_storage': securityStorage ? 'granted' : 'denied',
     });
+
+    // Save consent settings in localStorage
     localStorage.setItem('consentSettings', JSON.stringify({
       adStorage,
       adUserData,
@@ -116,6 +135,23 @@ class FerCookieBot {
       personalizationStorage,
       securityStorage
     }));
+
+    // Create or update cookies for each consent setting
+    const cookieSettings = {
+        'Consent_Necessary_Cookies': 1,
+        'Consent_Advertising_Cookies': adStorage ? 1 : 0,
+        'Consent_Use_of_Advertising_Data': adUserData ? 1 : 0,
+        'Consent_Ad_Personalization': adPersonalization ? 1 : 0,
+        'Consent_Analytics_Cookies': analyticsStorage ? 1 : 0,
+        'Consent_Functionality_Cookies': functionalityStorage ? 1 : 0,
+        'Consent_Personalization_Cookies': personalizationStorage ? 1 : 0,
+        'Consent_Security_Cookies': securityStorage ? 1 : 0
+    };
+
+    for (const [cookieName, cookieValue] of Object.entries(cookieSettings)) {
+        document.cookie = `${cookieName}=${cookieValue};path=/;secure;SameSite=None`;
+    }
+    
   }
   loadCSS = () => {
     return new Promise((resolve, reject) => {
