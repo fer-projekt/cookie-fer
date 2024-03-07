@@ -97,21 +97,6 @@ class FerCookieBot {
 
   updateConsent(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage) {
 
-    // Push consent settings into the Data Layer for real-time access
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-        event: 'consentUpdate',
-        consentSettings: {
-            adStorage,
-            adUserData,
-            adPersonalization,
-            analyticsStorage,
-            functionalityStorage,
-            personalizationStorage,
-            securityStorage
-        }
-    });
-
     // Update consent configuration for Google Tag Manager
     this.gtag('consent', 'update', {
       /* Consent Type	 */
@@ -138,20 +123,19 @@ class FerCookieBot {
 
     // Create or update cookies for each consent setting
     const cookieSettings = {
-        'Consent_Necessary_Cookies': 1,
-        'Consent_Advertising_Cookies': adStorage ? 1 : 0,
-        'Consent_Use_of_Advertising_Data': adUserData ? 1 : 0,
-        'Consent_Ad_Personalization': adPersonalization ? 1 : 0,
-        'Consent_Analytics_Cookies': analyticsStorage ? 1 : 0,
-        'Consent_Functionality_Cookies': functionalityStorage ? 1 : 0,
-        'Consent_Personalization_Cookies': personalizationStorage ? 1 : 0,
-        'Consent_Security_Cookies': securityStorage ? 1 : 0
+        'Consent_Necessary_Cookies': 'granted',
+        'Consent_Advertising_Cookies': adStorage ? 'granted' : 'denied',
+        'Consent_Use_of_Advertising_Data': adUserData ? 'granted' : 'denied',
+        'Consent_Ad_Personalization': adPersonalization ? 'granted' : 'denied',
+        'Consent_Analytics_Cookies': analyticsStorage ? 'granted' : 'denied',
+        'Consent_Functionality_Cookies': functionalityStorage ? 'granted' : 'denied',
+        'Consent_Personalization_Cookies': personalizationStorage ? 'granted' : 'denied',
+        'Consent_Security_Cookies': securityStorage ? 'granted' : 'denied',
     };
 
     for (const [cookieName, cookieValue] of Object.entries(cookieSettings)) {
         document.cookie = `${cookieName}=${cookieValue};path=/;secure;SameSite=None`;
     }
-    
   }
   loadCSS = () => {
     return new Promise((resolve, reject) => {
@@ -268,19 +252,6 @@ class FerCookieBot {
     });
   }
 
-  acceptAndSaveAll() {
-    this.updateConsent(true, true, true, true, true, true, true);
-    this.loadConsentSettings();
-    localStorage.setItem('dialogState', 'closed');
-
-  }
-
-  refuseAndSaveAll() {
-    this.updateConsent(false, false, false, false, false, false, false);
-    this.loadConsentSettings();
-    localStorage.setItem('dialogState', 'closed');
-
-  }
 
   loadConsentSettings() {
     const consentSettings = JSON.parse(localStorage.getItem('consentSettings'));
@@ -384,8 +355,41 @@ class FerCookieBot {
     const personalizationStorage = document.getElementById('personalization_storage').checked;
     const securityStorage = document.getElementById('security_storage').checked;
     this.updateConsent(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage);
+    // Since this method is now directly tied to user action, push to Data Layer here if needed
+    this.pushConsentToDataLayer(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage);
     // Set dialog state as 'closed' in localStorage after saving preferences
     localStorage.setItem('dialogState', 'closed');
+  }
+
+  acceptAndSaveAll() {
+    this.updateConsent(true, true, true, true, true, true, true);
+    this.loadConsentSettings();
+    this.pushConsentToDataLayer(true, true, true, true, true, true, true);
+    localStorage.setItem('dialogState', 'closed');
+  }
+
+  refuseAndSaveAll() {
+    this.updateConsent(false, false, false, false, false, false, false);
+    this.loadConsentSettings();
+    this.pushConsentToDataLayer(false, false, false, false, false, false, false);
+    localStorage.setItem('dialogState', 'closed');
+  }
+
+  pushConsentToDataLayer(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage) {
+   
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'consentUpdate',
+        consentSettings: {
+          adStorage: adStorage ? "granted" : "denied",
+          adUserData: adUserData ? "granted" : "denied",
+          adPersonalization: adPersonalization ? "granted" : "denied",
+          analyticsStorage: analyticsStorage ? "granted" : "denied",
+          functionalityStorage: functionalityStorage ? "granted" : "denied",
+          personalizationStorage: personalizationStorage ? "granted" : "denied",
+          securityStorage: securityStorage ? "granted" : "denied"
+      }
+    });
   }
 
   defineTranslations() {
