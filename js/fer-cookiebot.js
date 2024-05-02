@@ -45,7 +45,7 @@ class FerCookieBot {
     window.dataLayer = window.dataLayer || [];
     this.gtag('js', new Date());
     this.gtag('config', this.googleTagId);
-    initializeDefaultConsentMode();
+    this.initializeDefaultConsentMode();
     this.loadInitialConsent();
   }
 
