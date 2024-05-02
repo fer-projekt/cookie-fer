@@ -27,13 +27,6 @@ class FerCookieBot {
   }
 
   loadGTagScript() {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${this.googleTagId}`;
-    document.head.appendChild(script);
-    window.dataLayer = window.dataLayer || [];
-    this.gtag('js', new Date());
-    this.gtag('config', this.googleTagId);
     dataLayer.push({
       ad_storage: "denied",
       analytics_storage: "denied",
@@ -42,10 +35,16 @@ class FerCookieBot {
       personalization_storage: "denied",
       functionality_storage: "denied",
       security_storage: "denied",
-      wait_for_update: 500,
+      wait_for_update: 300,
       event: "gtm_consent_default",
     });
-    this.initializeDefaultConsentMode();
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${this.googleTagId}`;
+    document.head.appendChild(script);
+    window.dataLayer = window.dataLayer || [];
+    this.gtag('js', new Date());
+    this.gtag('config', this.googleTagId);
     this.loadInitialConsent();
   }
 
