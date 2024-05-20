@@ -27,6 +27,8 @@ class FerCookieBot {
   }
 
   loadGTagScript() {
+    // Ensure dataLayer is defined
+    window.dataLayer = window.dataLayer || [];
     dataLayer.push({
       ad_storage: "denied",
       analytics_storage: "denied",
