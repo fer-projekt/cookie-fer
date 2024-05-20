@@ -11,13 +11,9 @@
 	<!-- INITIALIZE COOKIE BOT -->
 	<script type="module">
 		import FerCookieBot from './js/fer-cookiebot.js';
-			window.addEventListener("load", () => {
-				setTimeout(() => {
-					const cssStyleSheet = "/dist/fer-cookiebot.min.css";
-					// FerCookieBot accepts three arguments ('YOUR_GOOGLE_TAG_ID', cssStyleSheet, facebookPixelId or null, options)
-					const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', cssStyleSheet);
-				}, 2800);
-			});
+			const cssStyleSheet = "/dist/fer-cookiebot.min.css";
+			// FerCookieBot accepts three arguments ('YOUR_GOOGLE_TAG_ID', cssStyleSheet, facebookPixelId or null, options)
+			const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', cssStyleSheet);
 	</script>
 </body>
 

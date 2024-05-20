@@ -1,72 +1,62 @@
-/* VERIFY CONSENT https://tagassistant.google.com */
-
 class FerCookieBot {
-
   constructor(googleTagId, cssStyleSheet, facebookPixelId, options = {}) {
     this.googleTagId = googleTagId;
     this.cssStyleSheet = cssStyleSheet || null;
     this.facebookPixelId = facebookPixelId || null;
     this.dialogId = 'consentDialog';
     this.language = document.documentElement.lang || "en"; // Default to English
-    this.loadGTagScript()
-    // Load translations first
     this.translations = this.defineTranslations();
-    // Determine the language-specific translations
     const defaultTranslationsForLanguage = this.translations[this.language] || this.translations["en"];
-    // Merge the language-specific translations with any provided options
-    // This ensures that any provided option overrides the corresponding default translation
-    this.translatedOptions = {
-      ...defaultTranslationsForLanguage,
-      ...options
-    };
+    this.translatedOptions = { ...defaultTranslationsForLanguage, ...options };
+    this.loadGTagScript();
     this.checkDialogState();
   }
 
   gtag() {
-    dataLayer.push(arguments);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(arguments);
   }
 
   loadGTagScript() {
-    // Ensure dataLayer is defined
-    window.dataLayer = window.dataLayer || [];
-    dataLayer.push({
-      ad_storage: "denied",
-      analytics_storage: "denied",
-      ad_user_data: "denied",
-      ad_personalization: "denied",
-      personalization_storage: "denied",
-      functionality_storage: "denied",
-      security_storage: "denied",
-      wait_for_update: 300,
-      event: "gtm_consent_default",
-    });
+    const consentSettings = JSON.parse(localStorage.getItem('consentSettings')) || this.getDefaultConsentSettings();
+    this.initializeConsentMode(consentSettings);
+    this.pushConsentToDataLayer(consentSettings);
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${this.googleTagId}`;
+    script.onload = () => {
+      this.gtag('js', new Date());
+      this.gtag('config', this.googleTagId);
+      
+    };
     document.head.appendChild(script);
-    window.dataLayer = window.dataLayer || [];
-    this.gtag('js', new Date());
-    this.gtag('config', this.googleTagId);
-    this.initializeDefaultConsentMode();
-    this.loadInitialConsent();
   }
 
-  loadInitialConsent() {
-    const consentSettings = JSON.parse(localStorage.getItem('consentSettings'));
-    if (consentSettings) {
-      this.updateConsent(consentSettings.adStorage, consentSettings.adUserData, consentSettings.adPersonalization, consentSettings.analyticsStorage, consentSettings.functionalityStorage, consentSettings.personalizationStorage, consentSettings.securityStorage)
-    }
+  getDefaultConsentSettings() {
+    return {
+      adStorage: false,
+      adUserData: false,
+      adPersonalization: false,
+      analyticsStorage: false,
+      functionalityStorage: false,
+      personalizationStorage: false,
+      securityStorage: false
+    };
+  }
+
+  loadInitialConsent(consentSettings) {
+    this.updateConsent(consentSettings);
   }
 
   addFacebookPixel() {
-    // console.log('Adding Facebook Pixel...');
     if (!this.facebookPixelId || !/^\d{16}$/.test(this.facebookPixelId)) {
       return;
-    }! function (f, b, e, v, n, t, s) {
+    }
+
+    !function (f, b, e, v, n, t, s) {
       if (f.fbq) return;
       n = f.fbq = function () {
-        n.callMethod ?
-          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
       };
       if (!f._fbq) f._fbq = n;
       n.push = n;
@@ -77,10 +67,10 @@ class FerCookieBot {
       t.async = !0;
       t.src = v;
       s = b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t, s)
-    }(window, document, 'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', this.facebookPixelId); // Replace 'YOUR_PIXEL_ID' with your actual Facebook Pixel ID
+      s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    
+    fbq('init', this.facebookPixelId);
     fbq('track', 'PageView');
     this.addFacebookPixelNoscript();
   }
@@ -93,39 +83,31 @@ class FerCookieBot {
     img.style.display = 'none';
     img.src = `https://www.facebook.com/tr?id=${this.facebookPixelId}&ev=PageView&noscript=1`;
     noscript.appendChild(img);
-    // Append the noscript tag to the body or a specific element within your page.
     document.body.insertBefore(noscript, document.body.firstChild);
   }
 
-  initializeDefaultConsentMode() {
+  initializeConsentMode(consentSettings) {
     this.gtag('consent', 'default', {
-      'ad_storage': 'denied',
-      'ad_user_data': 'denied',
-      'ad_personalization': 'denied',
-      'analytics_storage': 'denied',
-      'functionality_storage': 'denied',
-      'personalization_storage': 'denied',
-      'security_storage': 'denied'
+      'ad_storage': consentSettings.adStorage ? 'granted' : 'denied',
+      'ad_user_data': consentSettings.adUserData ? 'granted' : 'denied',
+      'ad_personalization': consentSettings.adPersonalization ? 'granted' : 'denied',
+      'analytics_storage': consentSettings.analyticsStorage ? 'granted' : 'denied',
+      'functionality_storage': consentSettings.functionalityStorage ? 'granted' : 'denied',
+      'personalization_storage': consentSettings.personalizationStorage ? 'granted' : 'denied',
+      'security_storage': consentSettings.securityStorage ? 'granted' : 'denied'
     });
   }
 
-  updateConsent(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage) {
-
-    // Update consent configuration for Google Tag Manager
-    this.gtag('consent', 'update', {
-      /* Consent Type	 */
-      'ad_storage': adStorage ? 'granted' : 'denied',
-      'ad_user_data': adUserData ? 'granted' : 'denied',
-      'ad_personalization': adPersonalization ? 'granted' : 'denied',
-      /* STORAGE TYPE */
-      'analytics_storage': analyticsStorage ? 'granted' : 'denied',
-      'functionality_storage': functionalityStorage ? 'granted' : 'denied',
-      'personalization_storage': personalizationStorage ? 'granted' : 'denied',
-      'security_storage': securityStorage ? 'granted' : 'denied',
-    });
-
-    // Save consent settings in localStorage
-    localStorage.setItem('consentSettings', JSON.stringify({
+  updateConsent({
+    adStorage = false,
+    adUserData = false,
+    adPersonalization = false,
+    analyticsStorage = false,
+    functionalityStorage = false,
+    personalizationStorage = false,
+    securityStorage = false
+  }) {
+    const consentSettings = {
       adStorage,
       adUserData,
       adPersonalization,
@@ -133,87 +115,74 @@ class FerCookieBot {
       functionalityStorage,
       personalizationStorage,
       securityStorage
-    }));
+    };
+    this.gtag('consent', 'update', {
+      'ad_storage': adStorage ? 'granted' : 'denied',
+      'ad_user_data': adUserData ? 'granted' : 'denied',
+      'ad_personalization': adPersonalization ? 'granted' : 'denied',
+      'analytics_storage': analyticsStorage ? 'granted' : 'denied',
+      'functionality_storage': functionalityStorage ? 'granted' : 'denied',
+      'personalization_storage': personalizationStorage ? 'granted' : 'denied',
+      'security_storage': securityStorage ? 'granted' : 'denied'
+    });
+    localStorage.setItem('consentSettings', JSON.stringify(consentSettings));
+    this.createConsentCookies(consentSettings);
+    this.pushConsentToDataLayer(consentSettings);
+  }
 
-    // Create or update cookies for each consent setting
+  createConsentCookies(consentSettings) {
     const cookieSettings = {
-        'Consent_Necessary_Cookies': 'granted',
-        'Consent_Advertising_Cookies': adStorage ? 'granted' : 'denied',
-        'Consent_Use_of_Advertising_Data': adUserData ? 'granted' : 'denied',
-        'Consent_Ad_Personalization': adPersonalization ? 'granted' : 'denied',
-        'Consent_Analytics_Cookies': analyticsStorage ? 'granted' : 'denied',
-        'Consent_Functionality_Cookies': functionalityStorage ? 'granted' : 'denied',
-        'Consent_Personalization_Cookies': personalizationStorage ? 'granted' : 'denied',
-        'Consent_Security_Cookies': securityStorage ? 'granted' : 'denied',
+      'Consent_Necessary_Cookies': 'granted',
+      'Consent_Advertising_Cookies': consentSettings.adStorage ? 'granted' : 'denied',
+      'Consent_Use_of_Advertising_Data': consentSettings.adUserData ? 'granted' : 'denied',
+      'Consent_Ad_Personalization': consentSettings.adPersonalization ? 'granted' : 'denied',
+      'Consent_Analytics_Cookies': consentSettings.analyticsStorage ? 'granted' : 'denied',
+      'Consent_Functionality_Cookies': consentSettings.functionalityStorage ? 'granted' : 'denied',
+      'Consent_Personalization_Cookies': consentSettings.personalizationStorage ? 'granted' : 'denied',
+      'Consent_Security_Cookies': consentSettings.securityStorage ? 'granted' : 'denied',
     };
 
     for (const [cookieName, cookieValue] of Object.entries(cookieSettings)) {
-        document.cookie = `${cookieName}=${cookieValue};path=/;secure;SameSite=None`;
+      document.cookie = `${cookieName}=${cookieValue};path=/;secure;SameSite=None`;
     }
   }
-  loadCSS = () => {
+
+  loadCSS() {
     return new Promise((resolve, reject) => {
       const link = document.createElement('link');
       link.href = this.cssStyleSheet;
       link.type = 'text/css';
       link.rel = 'stylesheet';
       link.onload = () => resolve("CSS loaded successfully");
-      link.onerror = (error) => reject(new Error("CSS failed to load"));
+      link.onerror = () => reject(new Error("CSS failed to load"));
       document.head.appendChild(link);
     });
-  };
+  }
 
   createConsentDialog() {
     return new Promise((resolve, reject) => {
       this.loadCSS().then(() => {
-        // Create the dialog element
         const dialog = document.createElement('div');
         dialog.id = this.dialogId;
         dialog.style.display = 'none';
         document.body.appendChild(dialog);
-        resolve();
-        // Set the title from translated options
+
         const titleDiv = document.createElement('div');
         titleDiv.id = 'consent_title';
         titleDiv.innerText = this.translatedOptions.title;
         dialog.appendChild(titleDiv);
-        // Dynamically create and append checkbox items with labels from translated options
-        const consentItems = [{
-            id: 'necessary_cookies',
-            text: this.translatedOptions.necessary_cookies_title,
-            disabled: true,
-            checked: true
-          },
-          {
-            id: 'ad_storage',
-            text: this.translatedOptions.ad_storage_title
-          },
-          {
-            id: 'ad_user_data',
-            text: this.translatedOptions.ad_user_data_title
-          },
-          {
-            id: 'ad_personalization',
-            text: this.translatedOptions.ad_personalization_title
-          },
-          {
-            id: 'analytics_storage',
-            text: this.translatedOptions.analytics_storage_title
-          },
-          {
-            id: 'functionality_storage',
-            text: this.translatedOptions.functionality_storage_title
-          },
-          {
-            id: 'personalization_storage',
-            text: this.translatedOptions.personalization_storage_title
-          },
-          {
-            id: 'security_storage',
-            text: this.translatedOptions.security_storage_title
-          }
 
+        const consentItems = [
+          { id: 'necessary_cookies', text: this.translatedOptions.necessary_cookies_title, disabled: true, checked: true },
+          { id: 'ad_storage', text: this.translatedOptions.ad_storage_title },
+          { id: 'ad_user_data', text: this.translatedOptions.ad_user_data_title },
+          { id: 'ad_personalization', text: this.translatedOptions.ad_personalization_title },
+          { id: 'analytics_storage', text: this.translatedOptions.analytics_storage_title },
+          { id: 'functionality_storage', text: this.translatedOptions.functionality_storage_title },
+          { id: 'personalization_storage', text: this.translatedOptions.personalization_storage_title },
+          { id: 'security_storage', text: this.translatedOptions.security_storage_title }
         ];
+
         consentItems.forEach(item => {
           const label = document.createElement('label');
           label.className = 'consent-item';
@@ -222,50 +191,36 @@ class FerCookieBot {
           input.id = item.id;
           if (item.disabled) input.disabled = true;
           if (item.checked) input.checked = true;
-          const textNode = document.createTextNode(' ' + item.text);
           label.appendChild(input);
-          label.appendChild(textNode);
+          label.appendChild(document.createTextNode(' ' + item.text));
           dialog.appendChild(label);
         });
-        // Set the consent text from translated options
+
         const consentTextDiv = document.createElement('div');
         consentTextDiv.id = 'consent_text';
-        consentTextDiv.innerHTML = this.translatedOptions.consent_text + ' ' + this.translatedOptions.consent_link;
+        consentTextDiv.innerHTML = `${this.translatedOptions.consent_text} ${this.translatedOptions.consent_link}`;
         dialog.appendChild(consentTextDiv);
 
-        // Set the consent text from translated options
         const consentButtonsDiv = document.createElement('div');
         consentButtonsDiv.id = 'consent_buttons';
         dialog.appendChild(consentButtonsDiv);
 
-        // Create and append the save preferences button
-        const acceptAllButton = document.createElement('button');
-        acceptAllButton.id = 'saveAcceptAllCookieBotPreferences';
-        acceptAllButton.className = 'consent-button';
-        acceptAllButton.innerText = this.translatedOptions.accept_all_button_title;
+        const createButton = (id, text) => {
+          const button = document.createElement('button');
+          button.id = id;
+          button.className = 'consent-button';
+          button.innerText = text;
+          return button;
+        };
 
-        // Create and append the save preferences button
-        const refuseAllButton = document.createElement('button');
-        refuseAllButton.id = 'saveRefuseAllCookieBotPreferences';
-        refuseAllButton.className = 'consent-button';
-        refuseAllButton.innerText = this.translatedOptions.refuse_all_button_title;
+        consentButtonsDiv.appendChild(createButton('saveAcceptAllCookieBotPreferences', this.translatedOptions.accept_all_button_title));
+        consentButtonsDiv.appendChild(createButton('saveRefuseAllCookieBotPreferences', this.translatedOptions.refuse_all_button_title));
+        consentButtonsDiv.appendChild(createButton('saveCookieBotPreferences', this.translatedOptions.button_title));
 
-        // Create and append the save preferences button
-        const saveButton = document.createElement('button');
-        saveButton.id = 'saveCookieBotPreferences';
-        saveButton.className = 'consent-button';
-        saveButton.innerText = this.translatedOptions.button_title;
-
-        consentButtonsDiv.appendChild(acceptAllButton);
-        consentButtonsDiv.appendChild(refuseAllButton);
-        consentButtonsDiv.appendChild(saveButton);
-
-      }).catch((error) => {
-        console.error('Failed to load CSS:', error);
-      });
+        resolve();
+      }).catch(error => reject(error));
     });
   }
-
 
   loadConsentSettings() {
     const consentSettings = JSON.parse(localStorage.getItem('consentSettings'));
@@ -277,52 +232,43 @@ class FerCookieBot {
       document.getElementById('functionality_storage').checked = consentSettings.functionalityStorage;
       document.getElementById('personalization_storage').checked = consentSettings.personalizationStorage;
       document.getElementById('security_storage').checked = consentSettings.securityStorage;
-    } else {
-      this.initializeDefaultConsentMode();
     }
-    if (consentSettings && (consentSettings.adStorage == true && consentSettings.adUserData == true)) {
+    if (consentSettings && consentSettings.adStorage && consentSettings.adUserData) {
       this.addFacebookPixel();
     }
   }
 
   checkDialogState() {
-
     const dialogState = localStorage.getItem('dialogState');
     if (dialogState !== 'closed') {
       this.createConsentDialog().then(() => {
         this.openDialog();
         this.attachEventListeners();
-      }).catch(error => {
-        console.error("Error creating dialog:", error);
-      });
+      }).catch(error => console.error("Error creating dialog:", error));
     }
-    /* START BUTTON */
 
     const changeCBPrefButton = document.getElementById('changeCookieBotPreferences');
     if (changeCBPrefButton) {
       changeCBPrefButton.innerText = this.translatedOptions.change_cookiebot_preferences;
-      var dialogCreated = false;
-      if (!dialogState || dialogState === 'closed') {
-        changeCBPrefButton.style.cursor = 'pointer';
-      }
-      changeCBPrefButton.addEventListener('click', (e) => {
+      let dialogCreated = false;
+      changeCBPrefButton.style.cursor = 'pointer';
+      changeCBPrefButton.addEventListener('click', () => {
         if (!dialogCreated) {
           this.createConsentDialog().then(() => {
             this.openDialog();
             this.loadConsentSettings();
             this.attachEventListeners();
             dialogCreated = true;
-          }).catch(error => {
-            console.error("Error creating dialog:", error);
-          });
+          }).catch(error => console.error("Error creating dialog:", error));
         } else {
           this.openDialog();
+          this.loadConsentSettings();
         }
       });
     }
   }
 
-  async openDialog() {
+  openDialog() {
     const dialog = document.getElementById(this.dialogId);
     if (dialog) {
       dialog.style.display = 'block';
@@ -337,78 +283,89 @@ class FerCookieBot {
   }
 
   attachEventListeners() {
-    const saveButton = document.getElementById('saveCookieBotPreferences');
-    if (saveButton) {
-      saveButton.addEventListener('click', () => {
-        this.saveCookieBotPreferences();
-        this.closeDialog();
-      });
-    }
-    const acceptAllButton = document.getElementById('saveAcceptAllCookieBotPreferences');
-    if (acceptAllButton) {
-      acceptAllButton.addEventListener('click', () => {
-        this.acceptAndSaveAll();
-        this.closeDialog();
-      })
-    }
-    const refuseAllButton = document.getElementById('saveRefuseAllCookieBotPreferences');
-    if (refuseAllButton) {
-      refuseAllButton.addEventListener('click', () => {
-        this.refuseAndSaveAll();
-        this.closeDialog();
-      })
-    }
+    const addClickListener = (id, handler) => {
+      const button = document.getElementById(id);
+      if (button) button.addEventListener('click', handler);
+    };
+
+    addClickListener('saveCookieBotPreferences', () => {
+      this.saveCookieBotPreferences();
+      this.closeDialog();
+    });
+    addClickListener('saveAcceptAllCookieBotPreferences', () => {
+      this.acceptAndSaveAll();
+      this.closeDialog();
+    });
+    addClickListener('saveRefuseAllCookieBotPreferences', () => {
+      this.refuseAndSaveAll();
+      this.closeDialog();
+    });
   }
 
   saveCookieBotPreferences() {
-    const adStorage = document.getElementById('ad_storage').checked;
-    const adUserData = document.getElementById('ad_user_data').checked;
-    const adPersonalization = document.getElementById('ad_personalization').checked;
-    const analyticsStorage = document.getElementById('analytics_storage').checked;
-    const functionalityStorage = document.getElementById('functionality_storage').checked;
-    const personalizationStorage = document.getElementById('personalization_storage').checked;
-    const securityStorage = document.getElementById('security_storage').checked;
-    this.updateConsent(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage);
-    // Since this method is now directly tied to user action, push to Data Layer here if needed
-    this.pushConsentToDataLayer(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage);
-    // Set dialog state as 'closed' in localStorage after saving preferences
+    const consentSettings = {
+      adStorage: document.getElementById('ad_storage').checked,
+      adUserData: document.getElementById('ad_user_data').checked,
+      adPersonalization: document.getElementById('ad_personalization').checked,
+      analyticsStorage: document.getElementById('analytics_storage').checked,
+      functionalityStorage: document.getElementById('functionality_storage').checked,
+      personalizationStorage: document.getElementById('personalization_storage').checked,
+      securityStorage: document.getElementById('security_storage').checked
+    };
+    this.updateConsent(consentSettings);
+  
     localStorage.setItem('dialogState', 'closed');
   }
 
   acceptAndSaveAll() {
-    this.updateConsent(true, true, true, true, true, true, true);
-    this.loadConsentSettings();
-    this.pushConsentToDataLayer(true, true, true, true, true, true, true);
+    const consentSettings = {
+      adStorage: true,
+      adUserData: true,
+      adPersonalization: true,
+      analyticsStorage: true,
+      functionalityStorage: true,
+      personalizationStorage: true,
+      securityStorage: true
+    };
+    this.updateConsent(consentSettings);
+   
     localStorage.setItem('dialogState', 'closed');
   }
 
   refuseAndSaveAll() {
-    this.updateConsent(false, false, false, false, false, false, false);
-    this.loadConsentSettings();
-    this.pushConsentToDataLayer(false, false, false, false, false, false, false);
+    const consentSettings = {
+      adStorage: false,
+      adUserData: false,
+      adPersonalization: false,
+      analyticsStorage: false,
+      functionalityStorage: false,
+      personalizationStorage: false,
+      securityStorage: false
+    };
+    this.updateConsent(consentSettings);
+  
     localStorage.setItem('dialogState', 'closed');
   }
 
-  pushConsentToDataLayer(adStorage, adUserData, adPersonalization, analyticsStorage, functionalityStorage, personalizationStorage, securityStorage) {
-   
+  pushConsentToDataLayer(consentSettings) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-        event: 'consentUpdate',
-        consentSettings: {
-          adStorage: adStorage ? "granted" : "denied",
-          adUserData: adUserData ? "granted" : "denied",
-          adPersonalization: adPersonalization ? "granted" : "denied",
-          analyticsStorage: analyticsStorage ? "granted" : "denied",
-          functionalityStorage: functionalityStorage ? "granted" : "denied",
-          personalizationStorage: personalizationStorage ? "granted" : "denied",
-          securityStorage: securityStorage ? "granted" : "denied"
+      event: 'consentUpdate',
+      consentSettings: {
+        adStorage: consentSettings.adStorage ? "granted" : "denied",
+        adUserData: consentSettings.adUserData ? "granted" : "denied",
+        adPersonalization: consentSettings.adPersonalization ? "granted" : "denied",
+        analyticsStorage: consentSettings.analyticsStorage ? "granted" : "denied",
+        functionalityStorage: consentSettings.functionalityStorage ? "granted" : "denied",
+        personalizationStorage: consentSettings.personalizationStorage ? "granted" : "denied",
+        securityStorage: consentSettings.securityStorage ? "granted" : "denied",
+        wait_for_update: 300,
       }
     });
   }
 
   defineTranslations() {
     return {
-      // Define your translations for each language here
       hr: {
         title: "Privola za korištenje osobnih podataka",
         necessary_cookies_title: "Nužni kolačići",
@@ -426,6 +383,7 @@ class FerCookieBot {
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Opširnije</a>",
         change_cookiebot_preferences: "Promijeni postavke Cookiebota",
       },
+      // Add other languages...
       en: {
         title: "Consent for the Use of Personal Data",
         necessary_cookies_title: "Necessary Cookies",
