@@ -7,7 +7,10 @@ class FerCookieBot {
     this.language = document.documentElement.lang || "en"; // Default to English
     this.translations = this.defineTranslations();
     const defaultTranslationsForLanguage = this.translations[this.language] || this.translations["en"];
-    this.translatedOptions = { ...defaultTranslationsForLanguage, ...options };
+    this.translatedOptions = {
+      ...defaultTranslationsForLanguage,
+      ...options
+    };
     this.loadGTagScript();
     this.checkDialogState();
   }
@@ -20,18 +23,16 @@ class FerCookieBot {
   loadGTagScript() {
     const consentSettings = JSON.parse(localStorage.getItem('consentSettings')) || this.getDefaultConsentSettings();
     this.initializeConsentMode(consentSettings);
-    this.pushConsentToDataLayer(consentSettings);
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${this.googleTagId}`;
     script.onload = () => {
       this.gtag('js', new Date());
       this.gtag('config', this.googleTagId);
-      
+
     };
     document.head.appendChild(script);
   }
-
   getDefaultConsentSettings() {
     return {
       adStorage: false,
@@ -53,7 +54,7 @@ class FerCookieBot {
       return;
     }
 
-    !function (f, b, e, v, n, t, s) {
+    ! function (f, b, e, v, n, t, s) {
       if (f.fbq) return;
       n = f.fbq = function () {
         n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
@@ -69,7 +70,7 @@ class FerCookieBot {
       s = b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t, s);
     }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-    
+
     fbq('init', this.facebookPixelId);
     fbq('track', 'PageView');
     this.addFacebookPixelNoscript();
@@ -88,14 +89,15 @@ class FerCookieBot {
 
   initializeConsentMode(consentSettings) {
     this.gtag('consent', 'default', {
-      'ad_storage': consentSettings.adStorage ? 'granted' : 'denied',
-      'ad_user_data': consentSettings.adUserData ? 'granted' : 'denied',
-      'ad_personalization': consentSettings.adPersonalization ? 'granted' : 'denied',
-      'analytics_storage': consentSettings.analyticsStorage ? 'granted' : 'denied',
-      'functionality_storage': consentSettings.functionalityStorage ? 'granted' : 'denied',
-      'personalization_storage': consentSettings.personalizationStorage ? 'granted' : 'denied',
-      'security_storage': consentSettings.securityStorage ? 'granted' : 'denied'
+      'ad_storage': 'denied',
+      'ad_user_data':  'denied',
+      'ad_personalization':   'denied',
+      'analytics_storage':  'denied',
+      'functionality_storage':  'denied',
+      'personalization_storage':  'denied',
+      'security_storage':  'denied'
     });
+    this.updateConsent(consentSettings);
   }
 
   updateConsent({
@@ -172,15 +174,40 @@ class FerCookieBot {
         titleDiv.innerText = this.translatedOptions.title;
         dialog.appendChild(titleDiv);
 
-        const consentItems = [
-          { id: 'necessary_cookies', text: this.translatedOptions.necessary_cookies_title, disabled: true, checked: true },
-          { id: 'ad_storage', text: this.translatedOptions.ad_storage_title },
-          { id: 'ad_user_data', text: this.translatedOptions.ad_user_data_title },
-          { id: 'ad_personalization', text: this.translatedOptions.ad_personalization_title },
-          { id: 'analytics_storage', text: this.translatedOptions.analytics_storage_title },
-          { id: 'functionality_storage', text: this.translatedOptions.functionality_storage_title },
-          { id: 'personalization_storage', text: this.translatedOptions.personalization_storage_title },
-          { id: 'security_storage', text: this.translatedOptions.security_storage_title }
+        const consentItems = [{
+            id: 'necessary_cookies',
+            text: this.translatedOptions.necessary_cookies_title,
+            disabled: true,
+            checked: true
+          },
+          {
+            id: 'ad_storage',
+            text: this.translatedOptions.ad_storage_title
+          },
+          {
+            id: 'ad_user_data',
+            text: this.translatedOptions.ad_user_data_title
+          },
+          {
+            id: 'ad_personalization',
+            text: this.translatedOptions.ad_personalization_title
+          },
+          {
+            id: 'analytics_storage',
+            text: this.translatedOptions.analytics_storage_title
+          },
+          {
+            id: 'functionality_storage',
+            text: this.translatedOptions.functionality_storage_title
+          },
+          {
+            id: 'personalization_storage',
+            text: this.translatedOptions.personalization_storage_title
+          },
+          {
+            id: 'security_storage',
+            text: this.translatedOptions.security_storage_title
+          }
         ];
 
         consentItems.forEach(item => {
@@ -313,7 +340,7 @@ class FerCookieBot {
       securityStorage: document.getElementById('security_storage').checked
     };
     this.updateConsent(consentSettings);
-  
+
     localStorage.setItem('dialogState', 'closed');
   }
 
@@ -328,7 +355,7 @@ class FerCookieBot {
       securityStorage: true
     };
     this.updateConsent(consentSettings);
-   
+
     localStorage.setItem('dialogState', 'closed');
   }
 
@@ -343,7 +370,7 @@ class FerCookieBot {
       securityStorage: false
     };
     this.updateConsent(consentSettings);
-  
+
     localStorage.setItem('dialogState', 'closed');
   }
 
