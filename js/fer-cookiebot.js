@@ -21,8 +21,9 @@ class FerCookieBot {
   }
 
   loadGTagScript() {
+    this.initializeConsentMode(this.getDefaultConsentSettings());
     const consentSettings = JSON.parse(localStorage.getItem('consentSettings')) || this.getDefaultConsentSettings();
-    this.initializeConsentMode(consentSettings);
+    this.updateConsent(consentSettings)
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${this.googleTagId}`;
@@ -89,15 +90,14 @@ class FerCookieBot {
 
   initializeConsentMode(consentSettings) {
     this.gtag('consent', 'default', {
-      'ad_storage': 'denied',
-      'ad_user_data':  'denied',
-      'ad_personalization':   'denied',
-      'analytics_storage':  'denied',
-      'functionality_storage':  'denied',
-      'personalization_storage':  'denied',
-      'security_storage':  'denied'
+      'ad_storage': consentSettings.adStorage ? 'granted' : 'denied',
+      'ad_user_data': consentSettings.adUserData ? 'granted' : 'denied',
+      'ad_personalization': consentSettings.adPersonalization ? 'granted' : 'denied',
+      'analytics_storage': consentSettings.analyticsStorage ? 'granted' : 'denied',
+      'functionality_storage': consentSettings.functionalityStorage ? 'granted' : 'denied',
+      'personalization_storage': consentSettings.personalizationStorage ? 'granted' : 'denied',
+      'security_storage': consentSettings.securityStorage ? 'granted' : 'denied'
     });
-    this.updateConsent(consentSettings);
   }
 
   updateConsent({

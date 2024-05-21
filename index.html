@@ -12,8 +12,10 @@
 	<script type="module">
 		import FerCookieBot from './js/fer-cookiebot.js';
 			const cssStyleSheet = "/dist/fer-cookiebot.min.css";
-			// FerCookieBot accepts three arguments ('YOUR_GOOGLE_TAG_ID', cssStyleSheet, facebookPixelId or null, options)
-			const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', cssStyleSheet);
+			const cookieBotOptions = {
+				consent_link: "<a href='{{route('pages.privacy_cookie-policy')}}' >{{__('text.viewMore')}}.</a>",
+			};
+			const cookieBot = new FerCookieBot('G-RWV56YDNJ3', cssStyleSheet, '1388154414717952', cookieBotOptions);
 	</script>
 </body>
 
