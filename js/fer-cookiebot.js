@@ -11,8 +11,11 @@ class FerCookieBot {
       ...defaultTranslationsForLanguage,
       ...options
     };
-    this.loadGTagScript();
-    this.checkDialogState();
+     // Set the initial default consent state as early as possible
+     const consentSettings = this.getDefaultConsentSettings();
+     this.setInitialConsentState(consentSettings);
+     this.loadGTagScript();
+     this.checkDialogState();
   }
 
   gtag() {
@@ -20,17 +23,31 @@ class FerCookieBot {
     window.dataLayer.push(arguments);
   }
 
+  setInitialConsentState() {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'gtm.js',
+      'gtm.start': new Date().getTime(),
+    });
+    this.gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization':  'denied',
+      'analytics_storage': 'denied',
+      'functionality_storage':  'denied',
+      'personalization_storage':  'denied',
+    });
+  }
+
   loadGTagScript() {
-    this.initializeConsentMode(this.getDefaultConsentSettings());
     const consentSettings = JSON.parse(localStorage.getItem('consentSettings')) || this.getDefaultConsentSettings();
-    this.updateConsent(consentSettings)
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${this.googleTagId}`;
     script.onload = () => {
       this.gtag('js', new Date());
       this.gtag('config', this.googleTagId);
-
+      this.loadInitialConsent(consentSettings);
     };
     document.head.appendChild(script);
   }
