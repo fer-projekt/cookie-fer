@@ -46,12 +46,12 @@ Create an instance of the CookieFer class with your Google Tag ID and Facebook P
 
     <script type="module">
         import CookieFer from './js/cookie-fer.min.js';
-        const cookieBotOptions = {
+        const cookieFerOptions = {
             // Your customization options / translations
         };
         /* ADD YOUR GTAG ID, PIXEL_ID, OPTIONS - CREATES GTAG/GA4 TAG, PIXEL TAG AND INITIALIZE COOKIES */
-        const cookieBot = new CookieFer('YOUR_GOOGLE_TAG_ID');
-        /* const cookieBot = new CookieFer('YOUR_GOOGLE_TAG_ID', 'YOUR_FACEBOOK_PIXEL_ID', cookieBotOptions); */
+        const cookieFer = new CookieFer('YOUR_GOOGLE_TAG_ID');
+        /* const cookieFer = new CookieFer('YOUR_GOOGLE_TAG_ID', 'YOUR_FACEBOOK_PIXEL_ID', cookieFerOptions); */
     </script>
 
 ## Multi-Language Support
@@ -79,7 +79,7 @@ CookieFer supports the following languages out of the box:
 
 CookieFer allows for  customization through options passed at initialization. This enables you  to specify the exact text and titles for various cookie categories and consent information.
 
-    const cookieBotOptions = {
+    const cookieFerOptions = {
         title: "Consent for the Use of Personal Data",
         necessary_cookies_title: "Necessary Cookies",
         ad_storage_title: "Advertising Cookies",
@@ -94,14 +94,14 @@ CookieFer allows for  customization through options passed at initialization. Th
         refuse_all_button_title: "Refuse All",
         consent_text: "This website uses cookies. We use cookies to personalize content and ads, to provide social media features, and to analyze our traffic.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Learn More</a>",
-        change_cookiebot_preferences: "Change Cookiebot Preferences",
+        change_cookieFer_preferences: "Change CookieFer Preferences",
     };
 
 ## Preference Button
 
 Implement a button allowing users to change their cookie preferences at any time:
 
-    <button id="changeCookieBotPreferences">Change Cookie Preferences</button>
+    <button id="changeCookieFerPreferences">Change Cookie Preferences</button>
 
 Remember to replace placeholders (like path/to/cookie-fer.js, YOUR_GOOGLE_TAG_ID, and links to documentation or license files) with actual paths and IDs relevant to your project. 
 
