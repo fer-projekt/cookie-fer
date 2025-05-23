@@ -1,22 +1,22 @@
-# FerCookieBot: JavaScript Consent Management for Google Consent v2 and Facebook Tracking
+# CookieFer: JavaScript Consent Management for Google Consent v2 and Facebook Tracking
 
-FerCookieBot is JavaScript solution designed for website owners to manage user consents for cookies and tracking technologies, ensuring compliance with data protection regulations like GDPR and CCPA. It now seamlessly integrates with both Google Consent Mode v2 and Facebook Pixel, offering dynamic consent handling and a respectful, legal approach to user data across major advertising platforms.
+CookieFer is JavaScript solution designed for website owners to manage user consents for cookies and tracking technologies, ensuring compliance with data protection regulations like GDPR and CCPA. It now seamlessly integrates with both Google Consent Mode v2 and Facebook Pixel, offering dynamic consent handling and a respectful, legal approach to user data across major advertising platforms.
 
-FerCookieBot enhances the integration of tracking technologies on your website by automatically generating and managing the necessary script codes for Google Analytics (via gtag.js) and Facebook Pixel. This feature simplifies the setup process, ensuring that your website complies with user consent preferences while eliminating the need for manual code insertion for these services.
+CookieFer enhances the integration of tracking technologies on your website by automatically generating and managing the necessary script codes for Google Analytics (via gtag.js) and Facebook Pixel. This feature simplifies the setup process, ensuring that your website complies with user consent preferences while eliminating the need for manual code insertion for these services.
 
 # Automated Script Injection
 
-Upon initialization, FerCookieBot dynamically inserts the Google Analytics and Facebook Pixel scripts into your webpage based on the provided identifiers (Google Tag ID and Facebook Pixel ID). This automation is designed to respect the consent choices made by your users, loading these tracking technologies only when permission has been granted, thereby adhering to privacy regulations such as GDPR and CCPA.
+Upon initialization, CookieFer dynamically inserts the Google Analytics and Facebook Pixel scripts into your webpage based on the provided identifiers (Google Tag ID and Facebook Pixel ID). This automation is designed to respect the consent choices made by your users, loading these tracking technologies only when permission has been granted, thereby adhering to privacy regulations such as GDPR and CCPA.
 
 ## Setup
 
-No need to manually add separate script tags for Google Analytics or Facebook Pixel in your website's HTML. FerCookieBot handles the inclusion of these scripts dynamically, reducing setup complexity and potential errors.
+No need to manually add separate script tags for Google Analytics or Facebook Pixel in your website's HTML. CookieFer handles the inclusion of these scripts dynamically, reducing setup complexity and potential errors.
 
-When initializing FerCookieBot, pass your valid Google Tag ID and Facebook Pixel ID (if necessary) as arguments to the constructor.
+When initializing CookieFer, pass your valid Google Tag ID and Facebook Pixel ID (if necessary) as arguments to the constructor.
 
 ## Remove Existing Tracking Scripts 
 
-If you have previously added Google Analytics or Facebook Pixel scripts directly to your website's HTML, remove those scripts to prevent duplicate tracking and ensure that data collection is managed solely through FerCookieBot.
+If you have previously added Google Analytics or Facebook Pixel scripts directly to your website's HTML, remove those scripts to prevent duplicate tracking and ensure that data collection is managed solely through CookieFer.
 
 # Features
 
@@ -32,33 +32,33 @@ If you have previously added Google Analytics or Facebook Pixel scripts directly
 
 **Security and Isolation:** Adheres to domain-specific storage rules, safeguarding user preferences and ensuring data isolation in line with web security standards.
 
-**To integrate FerCookieBot into your website, follow these steps:**
+**To integrate CookieFer into your website, follow these steps:**
 
 # Installation & Initialization
 
-Include the FerCookieBot css in your project.
+Include the CookieFer css in your project.
 
-    <link  rel="stylesheet"  href="css/fer-cookiebot.css">
+    <link  rel="stylesheet"  href="css/cookie-fer.css">
 
-Include the FerCookieBot script in your project.
+Include the CookieFer script in your project.
 
-Create an instance of the FerCookieBot class with your Google Tag ID and Facebook Pixel ID (Pixel and options are optional):
+Create an instance of the CookieFer class with your Google Tag ID and Facebook Pixel ID (Pixel and options are optional):
 
     <script type="module">
-        import FerCookieBot from './js/fer-cookiebot.min.js';
+        import CookieFer from './js/cookie-fer.min.js';
         const cookieBotOptions = {
             // Your customization options / translations
         };
         /* ADD YOUR GTAG ID, PIXEL_ID, OPTIONS - CREATES GTAG/GA4 TAG, PIXEL TAG AND INITIALIZE COOKIES */
-        const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID');
-        /* const cookieBot = new FerCookieBot('YOUR_GOOGLE_TAG_ID', 'YOUR_FACEBOOK_PIXEL_ID', cookieBotOptions); */
+        const cookieBot = new CookieFer('YOUR_GOOGLE_TAG_ID');
+        /* const cookieBot = new CookieFer('YOUR_GOOGLE_TAG_ID', 'YOUR_FACEBOOK_PIXEL_ID', cookieBotOptions); */
     </script>
 
 ## Multi-Language Support
 
-FerCookieBot now offers comprehensive multi-language support, enabling you to present the consent dialog in the user's preferred language. This feature enhances the user experience for a global audience by providing localized consent information, ensuring clarity and improving compliance with international privacy regulations.
+CookieFer now offers comprehensive multi-language support, enabling you to present the consent dialog in the user's preferred language. This feature enhances the user experience for a global audience by providing localized consent information, ensuring clarity and improving compliance with international privacy regulations.
 
-FerCookieBot supports the following languages out of the box:
+CookieFer supports the following languages out of the box:
 
 **Supported Languages:**
 
@@ -77,7 +77,7 @@ FerCookieBot supports the following languages out of the box:
 
 **Customizing Language Content** 
 
-FerCookieBot allows for  customization through options passed at initialization. This enables you  to specify the exact text and titles for various cookie categories and consent information.
+CookieFer allows for  customization through options passed at initialization. This enables you  to specify the exact text and titles for various cookie categories and consent information.
 
     const cookieBotOptions = {
         title: "Consent for the Use of Personal Data",
@@ -103,7 +103,7 @@ Implement a button allowing users to change their cookie preferences at any time
 
     <button id="changeCookieBotPreferences">Change Cookie Preferences</button>
 
-Remember to replace placeholders (like path/to/fer-cookiebot.js, YOUR_GOOGLE_TAG_ID, and links to documentation or license files) with actual paths and IDs relevant to your project. 
+Remember to replace placeholders (like path/to/cookie-fer.js, YOUR_GOOGLE_TAG_ID, and links to documentation or license files) with actual paths and IDs relevant to your project. 
 
 ## License
 

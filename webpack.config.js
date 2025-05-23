@@ -2,10 +2,10 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-  entry: './js/fer-cookiebot.js', // Your main JS file
+  entry: './js/cookie-fer.js', // Your main JS file
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'fer-cookiebot.min.js', // The output JS file
+    filename: 'cookie-fer.min.js', // The output JS file
     libraryTarget: 'module', // If you want to use it as a module in other files
   },
   experiments: {

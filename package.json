@@ -1,19 +1,19 @@
 {
   "name": "fer-cookie-bot",
   "version": "1.4.0",
-  "description": "FerCookieBot is a JavaScript solution designed for website owners to manage user consents for cookies and tracking technologies, ensuring compliance with data protection regulations like GDPR and CCPA. It now seamlessly integrates with both Google Consent Mode v2 and Facebook Pixel, offering dynamic consent handling and a respectful, legal approach to user data across major advertising platforms.",
-  "main": "fer-cookiebot.js",
+  "description": "CookieFer is a JavaScript solution designed for website owners to manage user consents for cookies and tracking technologies, ensuring compliance with data protection regulations like GDPR and CCPA. It now seamlessly integrates with both Google Consent Mode v2 and Facebook Pixel, offering dynamic consent handling and a respectful, legal approach to user data across major advertising platforms.",
+  "main": "cookie-fer.js",
   "scripts": {
     "build-js": "webpack --mode production",
-    "build-css": "sass --no-source-map css/fer-cookiebot.scss dist/fer-cookiebot.min.css --style compressed",
+    "build-css": "sass --no-source-map css/cookie-fer.scss dist/cookie-fer.min.css --style compressed",
     "build": "npm run build-js && npm run build-css",
     "watch-js": "webpack --watch --mode development",
-    "watch-css": "sass --no-source-map --watch  css/fer-cookiebot.scss:dist/fer-cookiebot.min.css --style compressed",
+    "watch-css": "sass --no-source-map --watch  css/cookie-fer.scss:dist/cookie-fer.min.css --style compressed",
     "watch": "npm-run-all --parallel watch-*"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fer-projekt/cookiebot.git"
+    "url": "git+https://github.com/fer-projekt/cookie-fer.git"
   },
   "keywords": [
     "Cookiebot",
@@ -30,9 +30,9 @@
   "author": "Fer Projekt",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fer-projekt/cookiebot/issues"
+    "url": "https://github.com/fer-projekt/cookie-fer/issues"
   },
-  "homepage": "https://github.com/fer-projekt/cookiebot#readme",
+  "homepage": "https://github.com/fer-projekt/cookie-fer#readme",
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.24.0",

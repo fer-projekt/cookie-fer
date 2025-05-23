@@ -1,4 +1,4 @@
-class FerCookieBot {
+class CookieFer {
   constructor(googleTagId, cssStyleSheet, facebookPixelId, options = {}) {
     this.googleTagId = googleTagId;
     this.cssStyleSheet = cssStyleSheet || null;
@@ -257,9 +257,9 @@ class FerCookieBot {
           return button;
         };
 
-        consentButtonsDiv.appendChild(createButton('saveAcceptAllCookieBotPreferences', this.translatedOptions.accept_all_button_title));
-        consentButtonsDiv.appendChild(createButton('saveRefuseAllCookieBotPreferences', this.translatedOptions.refuse_all_button_title));
-        consentButtonsDiv.appendChild(createButton('saveCookieBotPreferences', this.translatedOptions.button_title));
+        consentButtonsDiv.appendChild(createButton('saveAcceptAllCookieFerPreferences', this.translatedOptions.accept_all_button_title));
+        consentButtonsDiv.appendChild(createButton('saveRefuseAllCookieFerPreferences', this.translatedOptions.refuse_all_button_title));
+        consentButtonsDiv.appendChild(createButton('saveCookieFerPreferences', this.translatedOptions.button_title));
 
         resolve();
       }).catch(error => reject(error));
@@ -291,9 +291,9 @@ class FerCookieBot {
       }).catch(error => console.error("Error creating dialog:", error));
     }
 
-    const changeCBPrefButton = document.getElementById('changeCookieBotPreferences');
+    const changeCBPrefButton = document.getElementById('changeCookieFerPreferences');
     if (changeCBPrefButton) {
-      changeCBPrefButton.innerText = this.translatedOptions.change_cookiebot_preferences;
+      changeCBPrefButton.innerText = this.translatedOptions.change_cookieFer_preferences;
       let dialogCreated = false;
       changeCBPrefButton.style.cursor = 'pointer';
       changeCBPrefButton.addEventListener('click', () => {
@@ -332,21 +332,21 @@ class FerCookieBot {
       if (button) button.addEventListener('click', handler);
     };
 
-    addClickListener('saveCookieBotPreferences', () => {
-      this.saveCookieBotPreferences();
+    addClickListener('saveCookieFerPreferences', () => {
+      this.saveCookieFerPreferences();
       this.closeDialog();
     });
-    addClickListener('saveAcceptAllCookieBotPreferences', () => {
+    addClickListener('saveAcceptAllCookieFerPreferences', () => {
       this.acceptAndSaveAll();
       this.closeDialog();
     });
-    addClickListener('saveRefuseAllCookieBotPreferences', () => {
+    addClickListener('saveRefuseAllCookieFerPreferences', () => {
       this.refuseAndSaveAll();
       this.closeDialog();
     });
   }
 
-  saveCookieBotPreferences() {
+  saveCookieFerPreferences() {
     const consentSettings = {
       adStorage: document.getElementById('ad_storage').checked,
       adUserData: document.getElementById('ad_user_data').checked,
@@ -425,7 +425,7 @@ class FerCookieBot {
         refuse_all_button_title: "Odbaci sve",
         consent_text: "Ova web-stranica koristi kolačiće. Kolačiće upotrebljavamo kako bismo personalizirali sadržaj i oglase, omogućili značajke društvenih medija i analizirali promet.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Opširnije</a>",
-        change_cookiebot_preferences: "Promijeni postavke Cookiebota",
+        change_cookieFer_preferences: "Promijeni postavke Cookie Fera",
       },
       // Add other languages...
       en: {
@@ -443,7 +443,7 @@ class FerCookieBot {
         refuse_all_button_title: "Refuse All",
         consent_text: "This website uses cookies. We use cookies to personalize content and ads, to provide social media features, and to analyze our traffic.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Learn More</a>",
-        change_cookiebot_preferences: "Change Cookiebot Preferences",
+        change_cookieFer_preferences: "Change Cookie Fer Preferences",
 
       },
       de: {
@@ -461,7 +461,7 @@ class FerCookieBot {
         refuse_all_button_title: "Alles ablehnen",
         consent_text: "Diese Webseite verwendet Cookies. Wir verwenden Cookies, um Inhalte und Anzeigen zu personalisieren, Funktionen für soziale Medien anzubieten und unseren Verkehr zu analysieren.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Mehr erfahren</a>",
-        change_cookiebot_preferences: "Cookiebot-Einstellungen ändern",
+        change_cookieFer_preferences: "Cookie Fer-Einstellungen ändern",
 
       },
       it: {
@@ -479,7 +479,7 @@ class FerCookieBot {
         refuse_all_button_title: "Rifiuta tutto",
         consent_text: "Questo sito utilizza i cookie. Utilizziamo i cookie per personalizzare contenuti e annunci, fornire funzioni dei social media e analizzare il nostro traffico.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Scopri di più</a>",
-        change_cookiebot_preferences: "Modifica le preferenze di Cookiebot",
+        change_cookieFer_preferences: "Modifica le preferenze di Cookie Fer",
 
       },
       ru: {
@@ -497,7 +497,7 @@ class FerCookieBot {
         refuse_all_button_title: "Отклонить все",
         consent_text: "Этот сайт использует куки. Мы используем куки для персонализации контента и рекламы, предоставления функций социальных сетей и анализа трафика.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Узнать больше</a>",
-        change_cookiebot_preferences: "Изменить настройки Cookiebot",
+        change_cookieFer_preferences: "Изменить настройки Cookie Fer",
 
       },
       pl: {
@@ -515,7 +515,7 @@ class FerCookieBot {
         refuse_all_button_title: "Odrzuć wszystko",
         consent_text: "Ta strona używa ciasteczek. Używamy ciasteczek do personalizacji treści i reklam, oferowania funkcji mediów społecznościowych i analizowania naszego ruchu.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Dowiedz się więcej</a>",
-        change_cookiebot_preferences: "Zmień preferencje Cookiebota",
+        change_cookieFer_preferences: "Zmień preferencje Cookie Fera",
 
       },
       sl: {
@@ -533,7 +533,7 @@ class FerCookieBot {
         refuse_all_button_title: "Zavrni vse",
         consent_text: "Ta spletna stran uporablja piškotke. Uporabljamo piškotke za prilagajanje vsebine in oglasov, zagotavljanje funkcij socialnih medijev in analizo prometa.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Več informacij</a>",
-        change_cookiebot_preferences: "Spremeni nastavitve Cookiebota",
+        change_cookieFer_preferences: "Spremeni nastavitve Cookie Fera",
 
       },
       cs: {
@@ -551,7 +551,7 @@ class FerCookieBot {
         refuse_all_button_title: "Odmítnout vše",
         consent_text: "Tento web používá cookies. Cookies používáme k personalizaci obsahu a reklam, k poskytování funkcí sociálních sítí a k analýze našeho provozu.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Více informací</a>",
-        change_cookiebot_preferences: "Změnit předvolby Cookiebotu",
+        change_cookieFer_preferences: "Změnit předvolby Cookie Feru",
 
       },
       nl: {
@@ -569,7 +569,7 @@ class FerCookieBot {
         refuse_all_button_title: "Weiger alles",
         consent_text: "Deze website gebruikt cookies. We gebruiken cookies om content en advertenties te personaliseren, om sociale mediafuncties te bieden en om ons verkeer te analyseren.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Meer weten</a>",
-        change_cookiebot_preferences: "Cookiebot-voorkeuren wijzigen",
+        change_cookieFer_preferences: "Cookie Fer-voorkeuren wijzigen",
 
       },
       is: {
@@ -587,7 +587,7 @@ class FerCookieBot {
         refuse_all_button_title: "Hafna öllu",
         consent_text: "Þessi vefsíða notar kökur. Við notum kökur til að sérsníða efni og auglýsingar, bjóða upp á samfélagsmiðlaeiginleika og greina umferð okkar.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Læra meira</a>",
-        change_cookiebot_preferences: "Breyta stillingum Cookiebot",
+        change_cookieFer_preferences: "Breyta stillingum Cookie Fer",
 
       },
       fr: {
@@ -605,7 +605,7 @@ class FerCookieBot {
         refuse_all_button_title: "Tout refuser",
         consent_text: "Ce site utilise des cookies. Nous utilisons des cookies pour personnaliser le contenu et les annonces, offrir des fonctionnalités de médias sociaux et analyser notre trafic.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>En savoir plus</a>",
-        change_cookiebot_preferences: "Modifier les préférences de Cookiebot",
+        change_cookieFer_preferences: "Modifier les préférences de Cookie Fer",
 
       },
       hu: {
@@ -623,11 +623,11 @@ class FerCookieBot {
         refuse_all_button_title: "Összes elutasítása",
         consent_text: "Ez a weboldal sütiket használ. Sütiket használunk a tartalom és hirdetések személyre szabásához, a közösségi média funkciók biztosításához és forgalmunk elemzéséhez.",
         consent_link: "<a href='https://policies.google.com/privacy' target='_blank'>Tudj meg többet</a>",
-        change_cookiebot_preferences: "Cookiebot beállítások megváltoztatása",
+        change_cookieFer_preferences: "Cookie Fer beállítások megváltoztatása",
 
       },
       // Add other languages...
     };
   }
 }
-export default FerCookieBot;
+export default CookieFer;
