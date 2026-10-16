@@ -9,7 +9,12 @@
 //   php consent.php prune <months>     delete files older than <months> months
 
 ini_set('display_errors', '0');
+// The web PHP runs as a different user (ferplus2-www) than the account (ferplus2): files must stay group-writable,
+// and nobody else may read them.
+umask(0007);
 
+// Created once on the server with `mkdir ~/cookie-fer-consents && chmod 2770 ~/cookie-fer-consents`:
+// the web PHP may not create folders in the home directory itself.
 $dataDir = dirname(dirname(__DIR__)) . '/cookie-fer-consents';
 $keys = array('adStorage', 'adUserData', 'adPersonalization', 'analyticsStorage',
     'functionalityStorage', 'personalizationStorage', 'securityStorage');
