@@ -482,7 +482,9 @@ class CookieFer {
       });
       button.dataset.action = action;
       if (action === 'expand') {
-        button.hidden = true; // an older cached stylesheet always shows the categories, so this stays hidden there
+        // Hidden inline, not with the hidden attribute: Tailwind and Bootstrap resets force [hidden] { display: none !important },
+        // which would beat the stylesheet that shows this button on phones. An older cached stylesheet keeps it hidden.
+        button.style.display = 'none';
         button.setAttribute('aria-controls', 'consent_items');
         button.setAttribute('aria-expanded', 'false');
       }
