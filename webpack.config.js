@@ -19,7 +19,8 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'], // If you use modern JavaScript features
+            // The bundle is an ES module, so only browsers with module support ever load it – no ES5 output needed
+            presets: [['@babel/preset-env', { targets: { esmodules: true } }]],
           },
         },
       },
