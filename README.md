@@ -79,6 +79,16 @@ CookieFer allows for  customization through options passed at initialization. Th
     const cookieFerOptions = {
         title: "Consent for the Use of Personal Data",
         necessary_cookies_title: "Necessary Cookies",
+        necessary_cookies_text: "Required for the website to work and cannot be switched off.",
+        // The dialog shows three categories; each one switches these Consent Mode types:
+        // analytics → analytics_storage, marketing → ad_storage + ad_user_data + ad_personalization,
+        // functional → functionality_storage + personalization_storage + security_storage
+        analytics_title: "Analytics",
+        analytics_text: "Helps us understand which pages are visited so we can improve the website.",
+        marketing_title: "Marketing",
+        marketing_text: "Enables more relevant ads and measuring how well they work.",
+        functional_title: "Functionality and personalisation",
+        functional_text: "Remembers your settings and tailors content.",
         ad_storage_title: "Advertising Cookies",
         ad_user_data_title: "Use of Advertising Data",
         ad_personalization_title: "Ad Personalization",

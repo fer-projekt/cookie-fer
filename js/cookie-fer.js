@@ -18,6 +18,13 @@ const CONSENT_TYPES = [
   { key: 'securityStorage', gtag: 'security_storage', cookie: 'Consent_Security_Cookies' },
 ];
 
+// What the visitor sees: three plain-language categories, each switching one or more Consent Mode types.
+const CONSENT_GROUPS = [
+  { name: 'analytics', keys: ['analyticsStorage'] },
+  { name: 'marketing', keys: ['adStorage', 'adUserData', 'adPersonalization'] },
+  { name: 'functional', keys: ['functionalityStorage', 'personalizationStorage', 'securityStorage'] },
+];
+
 // Cookies set by Google and Meta tags, removed when the matching consent is withdrawn.
 const TRACKING_COOKIES = {
   analytics: [/^_ga($|_)/, /^_gid$/, /^_gat($|_)/],
@@ -266,10 +273,10 @@ class CookieFer {
   }
 
   saveCookieFerPreferences() {
-    this.updateConsent(this.createConsentSettings(({ gtag }) => {
-      const checkbox = this.getCheckbox(gtag);
-      return checkbox && checkbox.checked;
-    }));
+    const allowed = CONSENT_GROUPS
+      .filter(({ name }) => this.getCheckbox(name) && this.getCheckbox(name).checked)
+      .reduce((keys, group) => keys.concat(group.keys), []);
+    this.updateConsent(this.createConsentSettings(({ key }) => allowed.includes(key)));
   }
 
   acceptAndSaveAll() {
@@ -495,15 +502,18 @@ class CookieFer {
     const t = this.translatedOptions;
 
     const items = [
-      { name: 'necessary_cookies', label: t.necessary_cookies_title, checked: true, disabled: true },
-      ...CONSENT_TYPES.map(({ gtag }) => ({ name: gtag, label: t[`${gtag}_title`] })),
-    ].map(({ name, label, checked = false, disabled = false }) => createElement('label', { className: 'consent-item' }, [
+      { name: 'necessary_cookies', title: t.necessary_cookies_title, text: t.necessary_cookies_text, checked: true, disabled: true },
+      ...CONSENT_GROUPS.map(({ name }) => ({ name, title: t[`${name}_title`], text: t[`${name}_text`] })),
+    ].map(({ name, title, text, checked = false, disabled = false }) => createElement('label', { className: 'consent-item' }, [
       createElement('input', { type: 'checkbox', name, checked, disabled }),
-      createElement('span', { textContent: label }),
+      createElement('span', { className: 'consent-item__text' }, [
+        createElement('strong', { textContent: title }),
+        createElement('small', { textContent: text }),
+      ]),
     ]));
 
     // Accept and refuse share one style on purpose: refusing has to be as easy to spot as accepting.
-    // "Settings" is shown by the stylesheet only on phones, whose first layer hides the categories.
+    // The first layer hides the categories; the stylesheet then shows "Settings" instead of "Save selected".
     const buttons = [
       { id: 'saveRefuseAllCookieFerPreferences', action: 'refuse', text: t.refuse_all_button_title, variant: 'primary' },
       { id: 'saveAcceptAllCookieFerPreferences', action: 'accept', text: t.accept_all_button_title, variant: 'primary' },
@@ -585,9 +595,9 @@ class CookieFer {
 
   // Puts the current choice into the dialog's checkboxes, plus the consent ID the visitor can quote.
   loadConsentSettings() {
-    CONSENT_TYPES.forEach(({ key, gtag }) => {
-      const checkbox = this.getCheckbox(gtag);
-      if (checkbox) checkbox.checked = this.consent[key];
+    CONSENT_GROUPS.forEach(({ name, keys }) => {
+      const checkbox = this.getCheckbox(name);
+      if (checkbox) checkbox.checked = keys.every((key) => this.consent[key]);
     });
     const idLabel = this.dialog.querySelector('#consent_id');
     if (idLabel) idLabel.textContent = this.hasStoredChoice && this.consentId ? `${this.translatedOptions.consent_id_title}: ${this.consentId}` : '';
@@ -648,6 +658,13 @@ class CookieFer {
       hr: {
         title: "Privola za korištenje osobnih podataka",
         necessary_cookies_title: "Nužni kolačići",
+        necessary_cookies_text: "Potrebni za rad stranice i ne mogu se isključiti.",
+        analytics_title: "Analitika",
+        analytics_text: "Pomaže nam razumjeti koje se stranice posjećuju kako bismo poboljšali web.",
+        marketing_title: "Marketing",
+        marketing_text: "Omogućuje prikaz relevantnijih oglasa i mjerenje njihove uspješnosti.",
+        functional_title: "Funkcionalnost i personalizacija",
+        functional_text: "Pamti vaše postavke i prilagođava sadržaj.",
         ad_storage_title: "Oglašavački kolačići",
         ad_user_data_title: "Korištenje podataka o oglašavanju",
         ad_personalization_title: "Personalizacija oglasa",
@@ -669,6 +686,13 @@ class CookieFer {
       en: {
         title: "Consent for the Use of Personal Data",
         necessary_cookies_title: "Necessary Cookies",
+        necessary_cookies_text: "Required for the website to work and cannot be switched off.",
+        analytics_title: "Analytics",
+        analytics_text: "Helps us understand which pages are visited so we can improve the website.",
+        marketing_title: "Marketing",
+        marketing_text: "Enables more relevant ads and measuring how well they work.",
+        functional_title: "Functionality and personalisation",
+        functional_text: "Remembers your settings and tailors content.",
         ad_storage_title: "Advertising Cookies",
         ad_user_data_title: "Use of Advertising Data",
         ad_personalization_title: "Ad Personalization",
@@ -690,6 +714,13 @@ class CookieFer {
       de: {
         title: "Zustimmung zur Verwendung persönlicher Daten",
         necessary_cookies_title: "Notwendige Cookies",
+        necessary_cookies_text: "Für den Betrieb der Website erforderlich und können nicht deaktiviert werden.",
+        analytics_title: "Analyse",
+        analytics_text: "Hilft uns zu verstehen, welche Seiten besucht werden, damit wir die Website verbessern können.",
+        marketing_title: "Marketing",
+        marketing_text: "Ermöglicht relevantere Werbung und die Messung ihres Erfolgs.",
+        functional_title: "Funktionalität und Personalisierung",
+        functional_text: "Speichert Ihre Einstellungen und passt Inhalte an.",
         ad_storage_title: "Werbe-Cookies",
         ad_user_data_title: "Nutzung von Werbedaten",
         ad_personalization_title: "Anzeigenpersonalisierung",
@@ -711,6 +742,13 @@ class CookieFer {
       it: {
         title: "Consenso per l'uso dei dati personali",
         necessary_cookies_title: "Cookie necessari",
+        necessary_cookies_text: "Necessari per il funzionamento del sito, non possono essere disattivati.",
+        analytics_title: "Statistiche",
+        analytics_text: "Ci aiutano a capire quali pagine vengono visitate per migliorare il sito.",
+        marketing_title: "Marketing",
+        marketing_text: "Consentono annunci più pertinenti e la misurazione della loro efficacia.",
+        functional_title: "Funzionalità e personalizzazione",
+        functional_text: "Ricordano le tue impostazioni e adattano i contenuti.",
         ad_storage_title: "Cookie pubblicitari",
         ad_user_data_title: "Uso dei dati pubblicitari",
         ad_personalization_title: "Personalizzazione degli annunci",
@@ -732,6 +770,13 @@ class CookieFer {
       ru: {
         title: "Согласие на использование личных данных",
         necessary_cookies_title: "Необходимые куки",
+        necessary_cookies_text: "Нужны для работы сайта, их нельзя отключить.",
+        analytics_title: "Аналитика",
+        analytics_text: "Помогает понять, какие страницы посещают, чтобы улучшать сайт.",
+        marketing_title: "Маркетинг",
+        marketing_text: "Позволяет показывать более релевантную рекламу и измерять её эффективность.",
+        functional_title: "Функциональность и персонализация",
+        functional_text: "Запоминает ваши настройки и адаптирует содержимое.",
         ad_storage_title: "Куки для рекламы",
         ad_user_data_title: "Использование данных рекламы",
         ad_personalization_title: "Персонализация рекламы",
@@ -753,6 +798,13 @@ class CookieFer {
       pl: {
         title: "Zgoda na używanie danych osobowych",
         necessary_cookies_title: "Niezbędne ciasteczka",
+        necessary_cookies_text: "Niezbędne do działania strony, nie można ich wyłączyć.",
+        analytics_title: "Analityka",
+        analytics_text: "Pomaga nam zrozumieć, które strony są odwiedzane, abyśmy mogli ulepszać serwis.",
+        marketing_title: "Marketing",
+        marketing_text: "Umożliwia wyświetlanie trafniejszych reklam i mierzenie ich skuteczności.",
+        functional_title: "Funkcjonalność i personalizacja",
+        functional_text: "Zapamiętuje Twoje ustawienia i dopasowuje treści.",
         ad_storage_title: "Ciasteczka reklamowe",
         ad_user_data_title: "Użycie danych reklamowych",
         ad_personalization_title: "Personalizacja reklam",
@@ -774,6 +826,13 @@ class CookieFer {
       sl: {
         title: "Privolitev za uporabo osebnih podatkov",
         necessary_cookies_title: "Nujni piškotki",
+        necessary_cookies_text: "Potrebni za delovanje spletne strani in jih ni mogoče izklopiti.",
+        analytics_title: "Analitika",
+        analytics_text: "Pomaga nam razumeti, katere strani so obiskane, da lahko izboljšamo spletno stran.",
+        marketing_title: "Trženje",
+        marketing_text: "Omogoča ustreznejše oglase in merjenje njihove uspešnosti.",
+        functional_title: "Funkcionalnost in prilagajanje",
+        functional_text: "Zapomni si vaše nastavitve in prilagodi vsebino.",
         ad_storage_title: "Oglaševalski piškotki",
         ad_user_data_title: "Uporaba oglaševalskih podatkov",
         ad_personalization_title: "Personalizacija oglasov",
@@ -795,6 +854,13 @@ class CookieFer {
       cs: {
         title: "Souhlas s používáním osobních údajů",
         necessary_cookies_title: "Nezbytné cookies",
+        necessary_cookies_text: "Nezbytné pro fungování webu, nelze je vypnout.",
+        analytics_title: "Analytika",
+        analytics_text: "Pomáhá nám pochopit, které stránky jsou navštěvovány, abychom mohli web vylepšovat.",
+        marketing_title: "Marketing",
+        marketing_text: "Umožňuje relevantnější reklamy a měření jejich úspěšnosti.",
+        functional_title: "Funkčnost a personalizace",
+        functional_text: "Pamatuje si vaše nastavení a přizpůsobuje obsah.",
         ad_storage_title: "Reklamní cookies",
         ad_user_data_title: "Využití reklamních dat",
         ad_personalization_title: "Personalizace reklam",
@@ -816,6 +882,13 @@ class CookieFer {
       nl: {
         title: "Toestemming voor het gebruik van persoonsgegevens",
         necessary_cookies_title: "Noodzakelijke cookies",
+        necessary_cookies_text: "Nodig om de website te laten werken en kunnen niet worden uitgeschakeld.",
+        analytics_title: "Analyse",
+        analytics_text: "Helpt ons te begrijpen welke pagina's worden bezocht, zodat we de website kunnen verbeteren.",
+        marketing_title: "Marketing",
+        marketing_text: "Maakt relevantere advertenties mogelijk en meet hoe goed ze werken.",
+        functional_title: "Functionaliteit en personalisatie",
+        functional_text: "Onthoudt uw instellingen en past de inhoud aan.",
         ad_storage_title: "Advertentiecookies",
         ad_user_data_title: "Gebruik van advertentiegegevens",
         ad_personalization_title: "Advertentiepersonalisatie",
@@ -837,6 +910,13 @@ class CookieFer {
       is: {
         title: "Samþykki fyrir notkun persónuupplýsinga",
         necessary_cookies_title: "Nauðsynlegar kökur",
+        necessary_cookies_text: "Nauðsynlegar til að vefurinn virki og ekki hægt að slökkva á þeim.",
+        analytics_title: "Greining",
+        analytics_text: "Hjálpar okkur að skilja hvaða síður eru skoðaðar svo við getum bætt vefinn.",
+        marketing_title: "Markaðssetning",
+        marketing_text: "Gerir kleift að birta viðeigandi auglýsingar og mæla árangur þeirra.",
+        functional_title: "Virkni og sérsnið",
+        functional_text: "Man stillingarnar þínar og aðlagar efni.",
         ad_storage_title: "Auglýsingakökur",
         ad_user_data_title: "Notkun auglýsingagagna",
         ad_personalization_title: "Sérsniðnar auglýsingar",
@@ -858,6 +938,13 @@ class CookieFer {
       fr: {
         title: "Consentement pour l'utilisation des données personnelles",
         necessary_cookies_title: "Cookies nécessaires",
+        necessary_cookies_text: "Indispensables au fonctionnement du site, ils ne peuvent pas être désactivés.",
+        analytics_title: "Mesure d'audience",
+        analytics_text: "Nous aide à comprendre quelles pages sont consultées afin d'améliorer le site.",
+        marketing_title: "Marketing",
+        marketing_text: "Permet des publicités plus pertinentes et la mesure de leur efficacité.",
+        functional_title: "Fonctionnalité et personnalisation",
+        functional_text: "Mémorise vos paramètres et adapte le contenu.",
         ad_storage_title: "Cookies publicitaires",
         ad_user_data_title: "Utilisation des données publicitaires",
         ad_personalization_title: "Personnalisation des publicités",
@@ -879,6 +966,13 @@ class CookieFer {
       hu: {
         title: "Hozzájárulás a személyes adatok használatához",
         necessary_cookies_title: "Szükséges sütik",
+        necessary_cookies_text: "A weboldal működéséhez szükségesek, nem kapcsolhatók ki.",
+        analytics_title: "Analitika",
+        analytics_text: "Segít megérteni, mely oldalakat látogatják, hogy fejleszthessük a weboldalt.",
+        marketing_title: "Marketing",
+        marketing_text: "Relevánsabb hirdetéseket és azok hatékonyságának mérését teszi lehetővé.",
+        functional_title: "Funkcionalitás és személyre szabás",
+        functional_text: "Megjegyzi a beállításait és testre szabja a tartalmat.",
         ad_storage_title: "Hirdetési sütik",
         ad_user_data_title: "Hirdetési adatok használata",
         ad_personalization_title: "Hirdetések személyre szabása",

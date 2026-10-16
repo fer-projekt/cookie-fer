@@ -153,17 +153,12 @@ $cookie-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' 
   .consent-items {
     flex: 0 1 auto;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: .5em;
     min-height: 5em;
     margin: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
-
-    @media (max-width: 359px) {
-      grid-template-columns: minmax(0, 1fr);
-    }
   }
 
   .consent-item {
@@ -188,6 +183,23 @@ $cookie-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' 
 
     &:has(input:disabled) {
       cursor: default;
+    }
+
+    .consent-item__text {
+      display: flex;
+      flex-direction: column;
+      gap: .15em;
+      min-width: 0;
+
+      strong {
+        font-weight: 600;
+      }
+
+      small {
+        color: var(--cf-muted);
+        font-size: .9em;
+        font-weight: 400;
+      }
     }
 
     // Checkbox drawn as a switch: track colour plus a radial-gradient knob that slides across.
@@ -288,17 +300,15 @@ $cookie-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' 
     }
   }
 
-  // Phones and short screens: the first layer is only text and buttons, "Settings" reveals the categories.
-  @media (max-width: $desktop - .02px), (max-height: 500px) {
-    &:not([data-expanded]) {
-      .consent-items,
-      #saveCookieFerPreferences {
-        display: none;
-      }
+  // The first layer is only text and buttons; "Settings" reveals the categories and "Save selected".
+  &:not([data-expanded]) {
+    .consent-items,
+    #saveCookieFerPreferences {
+      display: none;
+    }
 
-      #showCookieFerSettings {
-        display: inline-block !important; // the script hides it with an inline style
-      }
+    #showCookieFerSettings {
+      display: inline-block !important; // the script hides it with an inline style
     }
   }
 
@@ -312,6 +322,13 @@ $cookie-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' 
     padding: 1.5em;
     border-bottom: 1px solid var(--cf-border);
     border-radius: var(--cf-radius);
+
+    // [Settings]            [Reject all] [Accept all] – accept and reject stay identical, accept sits where "confirm" usually is.
+    #saveCookieFerPreferences,
+    #showCookieFerSettings {
+      flex: 0 0 auto;
+      order: -1;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
