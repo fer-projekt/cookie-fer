@@ -33,6 +33,7 @@ const DEFAULT_OPTIONS = {
   privacyPolicyUrl: null, // the site's own privacy / cookie policy, linked from the dialog text
   consentMode: 'advanced', // 'basic' loads Google tags only after analytics or advertising consent
   urlPassthrough: false, // carry ad click IDs (gclid, wbraid ...) through internal links while ad cookies are denied
+  consentLogUrl: 'https://cdn.fer.plus/cookie-fer/consent.php', // proof of consent: records every choice, false = off
 };
 
 const TRIGGER_SELECTOR = '#changeCookieFerPreferences, [data-cookiefer-open]';
@@ -85,6 +86,16 @@ const loadScript = (src) => {
   document.head.appendChild(script);
 };
 
+// Random UUID v4; crypto.randomUUID only exists on https, so build one from getRandomValues elsewhere.
+const createConsentId = () => {
+  if (typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+  const bytes = window.crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+};
+
 const createElement = (tag, properties = {}, children = []) => {
   const element = Object.assign(document.createElement(tag), properties);
   element.append(...children);
@@ -124,6 +135,7 @@ class CookieFer {
     this.hasStoredChoice = Boolean(storedConsent);
     this.consent = storedConsent ? storedConsent.settings : this.getDefaultConsentSettings();
     this.consentTimestamp = storedConsent ? storedConsent.timestamp : null;
+    this.consentId = storedConsent ? storedConsent.id : null;
     if (!this.hasStoredChoice) {
       // Earlier versions always kept consentSettings in localStorage, and site scripts may read it.
       storage.setJSON(STORAGE_KEYS.settings, this.consent);
@@ -229,16 +241,19 @@ class CookieFer {
     const isOutdated = consentVersion != null && meta.version !== consentVersion;
     if (isExpired || isOutdated) return null;
 
-    return { settings: this.normalizeConsentSettings(settings), timestamp: meta.timestamp };
+    return { settings: this.normalizeConsentSettings(settings), timestamp: meta.timestamp, id: meta.id || null };
   }
 
-  updateConsent(settings) {
+  // action: 'accept', 'refuse' or 'save' – only recorded in the consent log.
+  updateConsent(settings, action = 'save') {
     this.consent = this.normalizeConsentSettings(settings);
     this.hasStoredChoice = true;
     this.consentTimestamp = Date.now();
+    this.consentId = this.consentId || createConsentId();
     storage.setJSON(STORAGE_KEYS.settings, this.consent);
-    storage.setJSON(STORAGE_KEYS.meta, { timestamp: this.consentTimestamp, version: this.options.consentVersion });
+    storage.setJSON(STORAGE_KEYS.meta, { timestamp: this.consentTimestamp, version: this.options.consentVersion, id: this.consentId });
     storage.set(STORAGE_KEYS.dialogState, 'closed');
+    this.logConsent(action);
 
     this.gtag('consent', 'update', this.toGtagConsent(this.consent));
     this.syncGoogleTags();
@@ -258,11 +273,32 @@ class CookieFer {
   }
 
   acceptAndSaveAll() {
-    this.updateConsent(this.createConsentSettings(() => true));
+    this.updateConsent(this.createConsentSettings(() => true), 'accept');
   }
 
   refuseAndSaveAll() {
-    this.updateConsent(this.getDefaultConsentSettings());
+    this.updateConsent(this.getDefaultConsentSettings(), 'refuse');
+  }
+
+  // Proof of consent (GDPR Art. 7): an anonymous record of the choice, without IP address or other personal data.
+  logConsent(action) {
+    const url = this.options.consentLogUrl;
+    if (!url) return;
+    const record = JSON.stringify({
+      id: this.consentId,
+      host: window.location.hostname,
+      action,
+      settings: this.consent,
+      version: this.options.consentVersion,
+      language: this.language,
+    });
+    try {
+      // text/plain keeps the cross-origin beacon a simple request (no CORS preflight).
+      if (navigator.sendBeacon && navigator.sendBeacon(url, new Blob([record], { type: 'text/plain' }))) return;
+      fetch(url, { method: 'POST', body: record, mode: 'no-cors', keepalive: true }).catch(() => {});
+    } catch {
+      // The log must never get in the way of the choice itself.
+    }
   }
 
   // 'advanced' Consent Mode loads Google tags right away, and they send cookieless pings until consent;
@@ -506,6 +542,7 @@ class CookieFer {
       consentText,
       createElement('div', { id: 'consent_items', className: 'consent-items' }, items),
       createElement('div', { id: 'consent_buttons' }, buttons),
+      createElement('div', { id: 'consent_id' }),
     ]);
     dialog.setAttribute('role', 'dialog');
     dialog.setAttribute('aria-labelledby', 'consent_title');
@@ -546,12 +583,14 @@ class CookieFer {
     return this.dialog ? this.dialog.querySelector(`input[name="${name}"]`) : null;
   }
 
-  // Puts the current choice into the dialog's checkboxes.
+  // Puts the current choice into the dialog's checkboxes, plus the consent ID the visitor can quote.
   loadConsentSettings() {
     CONSENT_TYPES.forEach(({ key, gtag }) => {
       const checkbox = this.getCheckbox(gtag);
       if (checkbox) checkbox.checked = this.consent[key];
     });
+    const idLabel = this.dialog.querySelector('#consent_id');
+    if (idLabel) idLabel.textContent = this.hasStoredChoice && this.consentId ? `${this.translatedOptions.consent_id_title}: ${this.consentId}` : '';
   }
 
   setDialogVisible(isVisible) {
@@ -624,6 +663,7 @@ class CookieFer {
         change_cookieFer_preferences: "Postavke kolačića",
         settings_button_title: "Postavke",
         consent_link_text: "Opširnije",
+        consent_id_title: "ID privole",
       },
       // Add other languages...
       en: {
@@ -644,6 +684,7 @@ class CookieFer {
         change_cookieFer_preferences: "Cookie Settings",
         settings_button_title: "Settings",
         consent_link_text: "Learn More",
+        consent_id_title: "Consent ID",
 
       },
       de: {
@@ -664,6 +705,7 @@ class CookieFer {
         change_cookieFer_preferences: "Cookie-Einstellungen",
         settings_button_title: "Einstellungen",
         consent_link_text: "Mehr erfahren",
+        consent_id_title: "Einwilligungs-ID",
 
       },
       it: {
@@ -684,6 +726,7 @@ class CookieFer {
         change_cookieFer_preferences: "Impostazioni cookie",
         settings_button_title: "Impostazioni",
         consent_link_text: "Scopri di più",
+        consent_id_title: "ID del consenso",
 
       },
       ru: {
@@ -704,6 +747,7 @@ class CookieFer {
         change_cookieFer_preferences: "Настройки куки",
         settings_button_title: "Настройки",
         consent_link_text: "Узнать больше",
+        consent_id_title: "ID согласия",
 
       },
       pl: {
@@ -724,6 +768,7 @@ class CookieFer {
         change_cookieFer_preferences: "Ustawienia ciasteczek",
         settings_button_title: "Ustawienia",
         consent_link_text: "Dowiedz się więcej",
+        consent_id_title: "ID zgody",
 
       },
       sl: {
@@ -744,6 +789,7 @@ class CookieFer {
         change_cookieFer_preferences: "Nastavitve piškotkov",
         settings_button_title: "Nastavitve",
         consent_link_text: "Več informacij",
+        consent_id_title: "ID privolitve",
 
       },
       cs: {
@@ -764,6 +810,7 @@ class CookieFer {
         change_cookieFer_preferences: "Nastavení cookies",
         settings_button_title: "Nastavení",
         consent_link_text: "Více informací",
+        consent_id_title: "ID souhlasu",
 
       },
       nl: {
@@ -784,6 +831,7 @@ class CookieFer {
         change_cookieFer_preferences: "Cookie-instellingen",
         settings_button_title: "Instellingen",
         consent_link_text: "Meer weten",
+        consent_id_title: "Toestemmings-ID",
 
       },
       is: {
@@ -804,6 +852,7 @@ class CookieFer {
         change_cookieFer_preferences: "Kökustillingar",
         settings_button_title: "Stillingar",
         consent_link_text: "Læra meira",
+        consent_id_title: "Auðkenni samþykkis",
 
       },
       fr: {
@@ -824,6 +873,7 @@ class CookieFer {
         change_cookieFer_preferences: "Paramètres des cookies",
         settings_button_title: "Paramètres",
         consent_link_text: "En savoir plus",
+        consent_id_title: "ID de consentement",
 
       },
       hu: {
@@ -844,6 +894,7 @@ class CookieFer {
         change_cookieFer_preferences: "Sütibeállítások",
         settings_button_title: "Beállítások",
         consent_link_text: "Tudj meg többet",
+        consent_id_title: "Hozzájárulás azonosító",
 
       },
       // Add other languages...

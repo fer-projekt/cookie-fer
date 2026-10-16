@@ -109,6 +109,7 @@ Besides the translation keys above, the options object accepts:
 | `consentVersion` | `null` | Set or change it (e.g. `'2026-10'`) after a cookie policy change to ask every visitor again. |
 | `privacyPolicyUrl` | `null` | Link to the site's own privacy or cookie policy, e.g. `'/politika-privatnosti'`. Without it the link points to Google's privacy policy. A custom `consent_link` takes precedence. |
 | `consentMode` | `'advanced'` | `'advanced'` loads Google tags right away; until consent they send only cookieless pings. `'basic'` loads Google tags only after the visitor allows analytics or advertising. |
+| `consentLogUrl` | `'https://cdn.fer.plus/cookie-fer/consent.php'` | Where every choice is recorded as proof of consent (see below). `false` turns it off. |
 | `urlPassthrough` | `false` | Sets Google's `url_passthrough`: while advertising cookies are denied, ad click IDs (`gclid`, `wbraid` …) are carried through internal links so conversions can still be attributed. |
 
 On phones and short screens, the first layer shows only the text and the buttons; **Settings** reveals the categories. When the dialog is opened from a preferences link, the categories are shown straight away.
@@ -154,6 +155,7 @@ The instance is also available as `window.cookieFer`:
 
 - `localStorage`: `consentSettings` (the choice), `dialogState`, and `consentMeta` (when the choice was made and for which `consentVersion`).
 - `Consent_*` cookies mirror the choice for server-side code and expire together with it.
+- Every choice gets a random consent ID (shown in the dialog when it is reopened) and is sent to `consent.php`, which appends it to `~/cookie-fer-consents/YYYY-MM.jsonl` outside the web root: time, consent ID, site, action and categories – no IP address or other personal data. On the server: `php consent.php stats [YYYY-MM]` (choices per site), `php consent.php find <consent id>`, `php consent.php prune <months>`.
 - When a visitor withdraws consent, CookieFer deletes the matching Google Analytics (`_ga*`, `_gid`, `_gat*`), Google Ads (`_gcl_*`, `_gac_*`) and Meta Pixel (`_fbp`, `_fbc`) cookies.
 
 Remember to replace placeholders (like path/to/cookie-fer.js, YOUR_GOOGLE_TAG_ID, and links to documentation or license files) with actual paths and IDs relevant to your project. 

@@ -222,6 +222,17 @@ $cookie-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' 
     }
   }
 
+  #consent_id {
+    margin: -.5em 0 0;
+    color: var(--cf-muted);
+    font-size: .75em;
+    overflow-wrap: anywhere;
+
+    &:empty {
+      display: none;
+    }
+  }
+
   #consent_buttons {
     display: flex;
     flex-wrap: wrap;
